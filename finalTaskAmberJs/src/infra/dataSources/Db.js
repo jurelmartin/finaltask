@@ -3,10 +3,10 @@ module.exports = {
   name: 'db',
   connector : 'sql',
   config: {
-    host: '127.0.0.1',
-    username: 'root',
-    password: 'root',
-    database: 'yourdatabase',
+    host: 'remotemysql.com',
+    username: 'gsHgUjN4jj',
+    password: 'cK4rfSzeoj',
+    database: 'gsHgUjN4jj',
     dialect: 'mysql',
     isSync: 'true',
 
