@@ -1,0 +1,4 @@
+name: finalTaskAmberJs
+description: 'Final Task - Authentication + AmbjerJs'
+framework: Amber.js
+template: Express.js
