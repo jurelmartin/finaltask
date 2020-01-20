@@ -6,11 +6,12 @@ const methodOverride = require('method-override');
 const controller = require('./utils/createControllerRoutes');
 const path = require('path');
 const openApiDoc = require('./openApi.json');
-const {authorization} = require('ftauth');
 
-module.exports = ({ config, containerMiddleware, loggerMiddleware, errorHandler, openApiMiddleware }) => {
+module.exports = ({ config, tokenChecker, containerMiddleware, loggerMiddleware, errorHandler, openApiMiddleware }) => {
   const router = Router();
   router.use(containerMiddleware);
+
+  router.use(tokenChecker);
 
   /* istanbul ignore if */
   if(config.env !== 'test') {
