@@ -7,11 +7,11 @@ const controller = require('./utils/createControllerRoutes');
 const path = require('path');
 const openApiDoc = require('./openApi.json');
 
-module.exports = ({ config, tokenChecker, containerMiddleware, loggerMiddleware, errorHandler, openApiMiddleware }) => {
+module.exports = ({ config, authMiddleware, containerMiddleware, loggerMiddleware, errorHandler, openApiMiddleware }) => {
   const router = Router();
   router.use(containerMiddleware);
 
-  router.use(tokenChecker);
+  router.use(authMiddleware);
 
   /* istanbul ignore if */
   if(config.env !== 'test') {
