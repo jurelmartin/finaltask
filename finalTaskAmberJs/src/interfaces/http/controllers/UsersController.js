@@ -8,26 +8,6 @@ class UsersController extends BaseController {
     
     const router = Router();
     super();
-    // router.use('/lo', this.injector('ShowUser'),
-    //   (req, res, next) => { 
-    //     const {operation} = req;
-    //     const { SUCCESS, ERROR, NOT_FOUND } = operation.events;
-    //     operation
-    //       .on(SUCCESS, next)
-    //       .on(NOT_FOUND, () => {
-    //         res.status(401).json({
-    //           status: 401,
-    //           message: 'Not Authenticated'
-    //         });
-    //       })
-    //       .on(ERROR, () => {
-    //         res.status(401).json({
-    //           status: 401,
-    //           message: 'Not Authenticated'
-    //         });
-    //       });
-    //     operation.execute(Number(req.userId));
-    //   } );
     router.post('/login', this.injector('LoginUsers'), this.create);
     router.get('/', this.injector('ListUsers'), this.index);
     router.post('/', this.injector('CreateUser'), this.create);
