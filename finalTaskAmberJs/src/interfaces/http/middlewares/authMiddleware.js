@@ -1,12 +1,15 @@
 const {authentication} = require('ftauth');
 const {authorization} = require('ftauth');
 const url = require('url');
+// const userRepository = require('src/infra/repositories/UserRepository');
+// const userModel = require('src/infra/models/UserModel');
 
 module.exports = (req, res, next) => {
   
   let unless = [
     ['POST', 'api/users/login'], 
-    ['POST', '/api/users/']
+    ['POST', '/api/users/'],
+    ['POST', '/api/users']
   ];
 
   unless = unless.map((path) => {
@@ -40,8 +43,19 @@ module.exports = (req, res, next) => {
     return res.status(403).json({ status: '401', message: 'Not Authenticated' });
   }
   // put the decoded refresh token to request
+  
+  // const check = new userRepository(userModel);
+  // const userExist = check.getById(Number(decodedToken.id));
+
+  // console.log(userExist);
+
+  // if (!userExist){
+  //   return res.status(403).json({ status: '401', message: 'Not Authenticated' });
+  // }
 
   // set User's role for the checkUser function
   authorization.setCurrentRole(decodedToken.role);
+  req.userId = decodedToken.id;
+  
   return next();
 };

@@ -1,41 +1,36 @@
 
-const { Router } = require('express');
+const express = require('express');
 const { BaseController } = require('@amberjs/core');
 
-class UsersController extends BaseController {
+class AuthController extends BaseController {
   
   constructor() {
     
-    const router = Router();
+    const app = express();
     super();
-    // router.use('/lo', this.injector('ShowUser'),
-    //   (req, res, next) => { 
-    //     const {operation} = req;
-    //     const { SUCCESS, ERROR, NOT_FOUND } = operation.events;
-    //     operation
-    //       .on(SUCCESS, next)
-    //       .on(NOT_FOUND, () => {
-    //         res.status(401).json({
-    //           status: 401,
-    //           message: 'Not Authenticated'
-    //         });
-    //       })
-    //       .on(ERROR, () => {
-    //         res.status(401).json({
-    //           status: 401,
-    //           message: 'Not Authenticated'
-    //         });
-    //       });
-    //     operation.execute(Number(req.userId));
-    //   } );
-    router.post('/login', this.injector('LoginUsers'), this.create);
-    router.get('/', this.injector('ListUsers'), this.index);
-    router.post('/', this.injector('CreateUser'), this.create);
-    router.get('/:id', this.injector('ShowUser'), this.show);
-    router.put('/:id', this.injector('UpdateUser'), this.update);
-    router.delete('/:id', this.injector('DeleteUser'), this.delete);
-
-    return router;
+    app.use(this.injector('ShowUser'),
+      (req, res, next) => { 
+        const {operation} = req;
+        const { SUCCESS, ERROR, NOT_FOUND } = operation.events;
+        operation
+          .on(SUCCESS, (result) => {
+            return next();
+          })
+          .on(NOT_FOUND, () => {
+            res.status(401).json({
+              status: 401,
+              message: 'Not Authenticated'
+            });
+          })
+          .on(ERROR, () => {
+            res.status(401).json({
+              status: 401,
+              message: 'Not Authenticated'
+            });
+          });
+        operation.execute(req.userId);
+      } );
+    return app;
   }
   
   // login(req, res, next) {
@@ -163,4 +158,4 @@ class UsersController extends BaseController {
   // }
 }
 
-module.exports = UsersController;
+module.exports = AuthController;
