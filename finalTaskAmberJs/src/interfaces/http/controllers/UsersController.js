@@ -8,7 +8,7 @@ class UsersController extends BaseController {
     
     const router = Router();
     super();
-    router.post('/login', this.injector('LoginUsers'), (req, res, next) => {
+    router.post('/login', this.injector('LoginUsers'), (req, res) => {
       const { operation } = req;
       const { SUCCESS, ERROR, VALIDATION_ERROR } = operation.events;
 
@@ -18,7 +18,7 @@ class UsersController extends BaseController {
             .status(200)
             .json(result);
         })
-        .on(ERROR, (result) => {
+        .on(ERROR, () => {
           res
             .status(401)
             .json({
@@ -26,7 +26,7 @@ class UsersController extends BaseController {
               message: 'Login Failed.'
             });
         })
-        .on(VALIDATION_ERROR, (result) => {
+        .on(VALIDATION_ERROR, () => {
           res
             .status(401)
             .json({
@@ -44,37 +44,6 @@ class UsersController extends BaseController {
     router.delete('/:id', authorization.checkUser('Admin'), this.injector('DeleteUser'), this.delete);
     return router;
   }
-  login(){
-    (req, res, next) => {
-      const { operation } = req;
-      const { SUCCESS, ERROR, VALIDATION_ERROR } = operation.events;
-
-      operation
-        .on(SUCCESS, (result) => {
-          res
-            .status(200)
-            .json(result);
-        })
-        .on(ERROR, (result) => {
-          res
-            .status(401)
-            .json({
-              status: '401',
-              message: 'Login Failed.'
-            });
-        })
-        .on(VALIDATION_ERROR, (result) => {
-          res
-            .status(401)
-            .json({
-              status: '401',
-              message: 'Login Failed.'
-            });
-        });
-
-      operation.execute(req.body);
-    }
-};
   /**
    * CRUD sample implementation
    * You may delete the commented code below if you have extended BaseController class

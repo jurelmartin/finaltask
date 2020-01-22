@@ -1,5 +1,4 @@
 const {authentication} = require('ftauth');
-const {authorization} = require('ftauth');
 const url = require('url');
 // const userRepository = require('src/infra/repositories/UserRepository');
 // const userModel = require('src/infra/models/UserModel');
@@ -29,7 +28,6 @@ module.exports = (req, res, next) => {
 
   for(let path of unless) {
     if (requestPath === path[1] && path[0] == req.method){
-      authorization.setCurrentRole('guest');
       return next();
     }
   }
@@ -42,7 +40,7 @@ module.exports = (req, res, next) => {
   if (!decodedToken) {
     return res.status(403).json({ status: '401', message: 'Not Authenticated' });
   }
-  
+
   req.userId = decodedToken.id;
   
   return next();
