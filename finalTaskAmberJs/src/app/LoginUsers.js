@@ -2,7 +2,7 @@ const { Operation } = require('@amberjs/core');
 const User = require('src/domain/User');
 const {authentication} = require('ftauth');
 
-class CreateUser extends Operation {
+class LoginUser extends Operation {
   constructor({ UserRepository }) {
     super();
     this.UserRepository = UserRepository;
@@ -33,6 +33,6 @@ class CreateUser extends Operation {
   }
 }
 
-CreateUser.setEvents(['SUCCESS', 'ERROR', 'VALIDATION_ERROR', 'NOT_FOUND']);
+LoginUser.setEvents(['SUCCESS', 'ERROR', 'VALIDATION_ERROR', 'NOT_FOUND']);
 
-module.exports = CreateUser;
+module.exports = LoginUser;

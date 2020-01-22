@@ -1,6 +1,6 @@
-
 const { Router } = require('express');
 const { BaseController } = require('@amberjs/core');
+const {authorization} = require('ftauth');
 
 class UsersController extends BaseController {
   
@@ -8,30 +8,42 @@ class UsersController extends BaseController {
     
     const router = Router();
     super();
-    router.post('/login', this.injector('LoginUsers'), this.create);
-    router.get('/', this.injector('ListUsers'), this.index);
-    router.post('/', this.injector('CreateUser'), this.create);
-    router.get('/:id', this.injector('ShowUser'), this.show);
-    router.put('/:id', this.injector('UpdateUser'), this.update);
-    router.delete('/:id', this.injector('DeleteUser'), this.delete);
+    router.post('/login', this.injector('LoginUsers'), (req, res) => {
+      const { operation } = req;
+      const { SUCCESS, ERROR, VALIDATION_ERROR } = operation.events;
 
+      operation
+        .on(SUCCESS, (result) => {
+          res
+            .status(200)
+            .json(result);
+        })
+        .on(ERROR, () => {
+          res
+            .status(401)
+            .json({
+              status: '401',
+              message: 'Login Failed.'
+            });
+        })
+        .on(VALIDATION_ERROR, () => {
+          res
+            .status(401)
+            .json({
+              status: '401',
+              message: 'Login Failed.'
+            });
+        });
+
+      operation.execute(req.body);
+    });
+    router.get('/', authorization.checkUser('Admin'), this.injector('ListUsers'), this.index);
+    router.post('/', authorization.checkUser('Admin'), this.injector('CreateUser'), this.create);
+    router.get('/:id', authorization.checkUser('Admin'), this.injector('ShowUser'), this.show);
+    router.put('/:id', authorization.checkUser('Admin'), this.injector('UpdateUser'), this.update);
+    router.delete('/:id', authorization.checkUser('Admin'), this.injector('DeleteUser'), this.delete);
     return router;
   }
-  
-  // login(req, res, next) {
-  //   const { operation } = req;
-  //   const { SUCCESS, ERROR } = operation.events;
-
-  //   operation
-  //     .on(SUCCESS, (result) => {
-  //       res
-  //         .status(200)
-  //         .json(result);
-  //     })
-  //     .on(ERROR, next);
-
-  //   operation.execute(req.body);
-  // }
   /**
    * CRUD sample implementation
    * You may delete the commented code below if you have extended BaseController class
