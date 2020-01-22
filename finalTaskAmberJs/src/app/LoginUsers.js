@@ -20,27 +20,28 @@ class LoginUsers extends Operation {
 
     try {
       let userExist = await this.UserRepository.getAll({where: {email}});
-      if (userExist) {
-        const getPassword = userExist[0].dataValues.password;
+      if (!userExist) {
+        // const error;
+        // this.emit(NOT_FOUND, {
+        //   type: error.message,
+        //   details: error.details
+        // });
+      }
+      const getPassword = userExist[0].dataValues.password;
 
         const checkPassword = await comparePassword(password, getPassword);
-        if(checkPassword) {
-          const token = authentication.generateToken(userExist[0].id, userExist[0].role, 'supersecretkey', '1h', '24h');
-          this.emit(SUCCESS, token);
-  
-        }
-  
+        
+      if(!checkPassword) {
+        // const error;
+        // this.emit(NOT_FOUND, {
+        //   type: error.message,
+        //   details: error.details
+        // });
+        
       }
-      // const userId = userExist[0].id;
-      // const userRole = userExist[0].role;
+      const token = authentication.generateToken(userExist[0].id, userExist[0].role, 'supersecretkey', '1h', '24h');
+      this.emit(SUCCESS, token);
 
-      // if(!userExist) {
-
-      //   return this.emit(NOT_FOUND, error);
-      // }
-  
-
-     
 
     } catch(error) {
       this.emit(NOT_FOUND, {
