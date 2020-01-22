@@ -1,3 +1,5 @@
+const { hashPassword } = require('../encryption/hashPassword');
+
 
 module.exports = {
   name: 'UserModel',
@@ -28,6 +30,11 @@ module.exports = {
         type: DataTypes.STRING
       },
     }, {
+      hooks: {
+        beforeCreate: user => {
+          user.password = hashPassword(user.password)
+        }
+      },
       tableName: 'users',
       timestamps: true
     });

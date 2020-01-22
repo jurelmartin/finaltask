@@ -1,5 +1,6 @@
 const { Operation } = require('@amberjs/core');
 const User = require('src/domain/User');
+const bcrypt = require('bcrypt');
 
 class CreateUser extends Operation {
   constructor({ UserRepository }) {
@@ -11,6 +12,8 @@ class CreateUser extends Operation {
     const { SUCCESS, ERROR, VALIDATION_ERROR } = this.events;
 
     const user = new User(data);
+    // const hashedPassword = await bcrypt.hash(user.password, 12);
+    // user.password = hashedPassword;
 
     try {
       const newUser = await this.UserRepository.add(user.toJSON());
