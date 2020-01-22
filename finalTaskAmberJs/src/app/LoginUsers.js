@@ -43,10 +43,10 @@ class LoginUsers extends Operation {
      
 
     } catch(error) {
-      if(error.message === 'NotFoundError') {
-        return this.emit(NOT_FOUND, error);
-      }
-      this.emit(ERROR, error);
+      this.emit(NOT_FOUND, {
+        type: error.message,
+        details: error.details
+      });
     }
   }
 }

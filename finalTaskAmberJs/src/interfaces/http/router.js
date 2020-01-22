@@ -10,7 +10,6 @@ const openApiDoc = require('./openApi.json');
 module.exports = ({ config, authMiddleware, containerMiddleware, loggerMiddleware, errorHandler, openApiMiddleware }) => {
   const router = Router();
   router.use(containerMiddleware);
-
   router.use(authMiddleware);
 
   /* istanbul ignore if */
@@ -26,6 +25,8 @@ module.exports = ({ config, authMiddleware, containerMiddleware, loggerMiddlewar
     .use(bodyParser.json())
     .use(compression())
     .use('/docs', openApiMiddleware(openApiDoc));
+  
+  
 
   /*
    * Add your API routes here
@@ -39,7 +40,8 @@ module.exports = ({ config, authMiddleware, containerMiddleware, loggerMiddlewar
    */
 
   // apiRouter.use('/users', controller('controllers/UsersController'));
-
+  // apiRouter.use(controller('controllers/AuthController.js'));
+  apiRouter.use(controller('controllers/AuthController.js'));
   apiRouter.use('/users', controller('controllers/UsersController.js'));
   /* apiRoutes END */
 
