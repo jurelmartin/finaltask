@@ -14,7 +14,7 @@ class UsersController {
       next();
     };
     const router = Router();
-    router.post('/login', this.injector('LoginUsers'),this.login);
+    router.post('/login', this.injector('LoginUsers'), this.login);
     // super();
     
     router.get('/', this.injector('ListUsers'), this.index);
@@ -26,9 +26,9 @@ class UsersController {
     return router;
   }
   
-  login(req, res, next) {
+  login(req, res) {
     const { operation } = req;
-    const { SUCCESS, ERROR, NOT_FOUND } = operation.events;
+    const { SUCCESS, ERROR } = operation.events;
 
     operation
       .on(SUCCESS, (result) => {
@@ -36,12 +36,15 @@ class UsersController {
           .status(200)
           .json(result);
       })
-      .on(NOT_FOUND, () => {
-        res.status(404).json({
-          status: 401,
-          message: 'Invalid Credentials'
-        });
-      })
+      .on(ERROR,  (result) => {
+        res
+          .status(403)
+          .json({
+            type: result.type,
+            details: result.details
+          });
+      });
+
     operation.execute(req.body);
   }
   /**

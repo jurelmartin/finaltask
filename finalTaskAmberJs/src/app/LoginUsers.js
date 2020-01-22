@@ -11,7 +11,7 @@ class LoginUsers extends Operation {
   }
 
   async execute(data) {
-    const { SUCCESS, ERROR, VALIDATION_ERROR } = this.events;
+    const { SUCCESS, ERROR } = this.events;
 
     const user = new User(data).toJSON();
     
@@ -21,31 +21,29 @@ class LoginUsers extends Operation {
     try {
       let userExist = await this.UserRepository.getAll({where: {email}});
       if (!userExist) {
-        // const error;
-        // this.emit(NOT_FOUND, {
-        //   type: error.message,
-        //   details: error.details
-        // });
+        const error = new Error;
+        error.type = 'VALIDATION_ERROR';
+        error.details = 'Invalid password/username';
+        throw error;
       }
       const getPassword = userExist[0].dataValues.password;
 
-        const checkPassword = await comparePassword(password, getPassword);
+      const checkPassword = await comparePassword(password, getPassword);
         
       if(!checkPassword) {
-        // const error;
-        // this.emit(NOT_FOUND, {
-        //   type: error.message,
-        //   details: error.details
-        // });
-        
+        const error = new Error;
+        error.type = 'VALIDATION_ERROR';
+        error.details = 'Invalid password/username';
+        throw error;   
       }
+
       const token = authentication.generateToken(userExist[0].id, userExist[0].role, 'supersecretkey', '1h', '24h');
       this.emit(SUCCESS, token);
 
 
     } catch(error) {
-      this.emit(NOT_FOUND, {
-        type: error.message,
+      this.emit(ERROR, {
+        type: error.type,
         details: error.details
       });
     }
