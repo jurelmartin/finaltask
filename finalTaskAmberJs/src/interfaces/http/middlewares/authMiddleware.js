@@ -42,19 +42,7 @@ module.exports = (req, res, next) => {
   if (!decodedToken) {
     return res.status(403).json({ status: '401', message: 'Not Authenticated' });
   }
-  // put the decoded refresh token to request
   
-  // const check = new userRepository(userModel);
-  // const userExist = check.getById(Number(decodedToken.id));
-
-  // console.log(userExist);
-
-  // if (!userExist){
-  //   return res.status(403).json({ status: '401', message: 'Not Authenticated' });
-  // }
-
-  // set User's role for the checkUser function
-  authorization.setCurrentRole(decodedToken.role);
   req.userId = decodedToken.id;
   
   return next();

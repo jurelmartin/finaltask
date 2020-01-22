@@ -7,12 +7,10 @@ const controller = require('./utils/createControllerRoutes');
 const path = require('path');
 const openApiDoc = require('./openApi.json');
 
-module.exports = ({ config, authMiddleware, checkUserExistence, containerMiddleware, loggerMiddleware, errorHandler, openApiMiddleware }) => {
+module.exports = ({ config, authMiddleware, containerMiddleware, loggerMiddleware, errorHandler, openApiMiddleware }) => {
   const router = Router();
-  const checkIfUserExists = new checkUserExistence;
   router.use(containerMiddleware);
   router.use(authMiddleware);
-  router.use(checkIfUserExists);
 
   /* istanbul ignore if */
   if(config.env !== 'test') {
@@ -43,6 +41,7 @@ module.exports = ({ config, authMiddleware, checkUserExistence, containerMiddlew
 
   // apiRouter.use('/users', controller('controllers/UsersController'));
   // apiRouter.use(controller('controllers/AuthController.js'));
+  apiRouter.use(controller('controllers/AuthController.js'));
   apiRouter.use('/users', controller('controllers/UsersController.js'));
   /* apiRoutes END */
 

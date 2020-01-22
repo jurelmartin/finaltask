@@ -1,6 +1,6 @@
-
 const express = require('express');
 const { BaseController } = require('@amberjs/core');
+const {authorization} = require('ftauth');
 
 class AuthController extends BaseController {
   
@@ -18,7 +18,8 @@ class AuthController extends BaseController {
         const {operation} = req;
         const { SUCCESS, ERROR, NOT_FOUND } = operation.events;
         operation
-          .on(SUCCESS, () => {
+          .on(SUCCESS, (result) => {
+            authorization.setCurrentRole(result.dataValues.role);
             return next();
           })
           .on(NOT_FOUND, () => {
