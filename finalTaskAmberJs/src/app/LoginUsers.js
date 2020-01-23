@@ -37,7 +37,7 @@ class LoginUsers extends Operation {
         throw error;   
       }
 
-      const token = authentication.generateToken(userExist[0].id, userExist[0].role, 'supersecretkey', '1h', '24h');
+      const token = authentication.generateToken(userExist[0].id, 'supersecretkey', '1h', '24h');
       this.emit(SUCCESS, token);
 
 
