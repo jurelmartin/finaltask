@@ -1,47 +1,32 @@
 const {authentication} = require('ftauth');
-const url = require('url');
+const {paths} = require('ftauth');
+
 // const userRepository = require('src/infra/repositories/UserRepository');
 // const userModel = require('src/infra/models/UserModel');
 
 module.exports = (req, res, next) => {
-  
-  let unless = [
-    ['POST', 'api/users/login'], 
-    ['POST', '/api/users/'],
-    ['POST', '/api/users']
-  ];
 
-  unless = unless.map((path) => {
-    const filter = url.format({
-      protocol: req.protocol,
-      host: req.get('host'),
-      pathname: path[1],
-    });
-    return [path[0], filter];
-  });
+  paths.setPath([
+    {roles: ['Admin'], method: 'GET', url: '/api/users'}, 
+    {roles: ['Admin'], method: 'GET', url: '/api/user?id=' + req.query.id}, 
+    {roles: ['Admin'], method: 'PUT', url: '/api/update?=id' + req.query.id},
+    {roles: ['Admin'], method: 'DELETE', url: '/api/delete?=id'+ req.query.id}
+  ]);
 
-  const requestPath = url.format({
-    protocol: req.protocol,
-    host: req.get('host'),
-    pathname: req.path,
-  });
+  const pathExist = authentication.checkPath(req.originalUrl, req.method);
 
-  for(let path of unless) {
-    if (requestPath === path[1] && path[0] == req.method){
-      return next();
+  if(pathExist){
+    const authHeader = req.get('Authorization');
+    // gets the decoded token from verify function
+    const decodedToken = authentication.verifyToken(authHeader, 'supersecretkey');
+
+    if (!decodedToken) {
+      return res.status(403).json({ status: '403', message: 'Not Authenticated' });
     }
+
+    req.userId = decodedToken.id;
+
   }
 
-  const authHeader = req.get('Authorization');
-  // gets the decoded token from verify function
-
-  const decodedToken = authentication.verifyToken(authHeader, 'supersecretkey');
-
-  if (!decodedToken) {
-    return res.status(403).json({ status: '401', message: 'Not Authenticated' });
-  }
-
-  req.userId = decodedToken.id;
-  
-  return next();
+  next();
 };

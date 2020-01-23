@@ -14,14 +14,15 @@ class UsersController {
       next();
     };
     const router = Router();
+
     router.post('/login', this.injector('LoginUsers'), this.login);
     // super();
     
-    router.get('/', this.injector('ListUsers'), this.index);
-    router.post('/', this.injector('CreateUser'), this.create);
-    router.get('/:id', this.injector('ShowUser'), this.show);
-    router.put('/:id', this.injector('UpdateUser'), this.update);      
-    router.delete('/:id', this.injector('DeleteUser'), this.delete);
+    router.get('/users', this.injector('ListUsers'), this.index);
+    router.post('/add', this.injector('CreateUser'), this.create);
+    router.get('/user', this.injector('ShowUser'), this.show);
+    router.put('/update', this.injector('UpdateUser'), this.update);      
+    router.delete('/delete', this.injector('DeleteUser'), this.delete);
 
     return router;
   }
@@ -87,7 +88,7 @@ class UsersController {
       })
       .on(ERROR, next);
 
-    operation.execute(Number(req.params.id));
+    operation.execute(Number(req.query.id));
   }
 
   create(req, res, next) {
@@ -136,7 +137,7 @@ class UsersController {
       })
       .on(ERROR, next);
 
-    operation.execute(Number(req.params.id), req.body);
+    operation.execute(Number(req.query.id), req.body);
   }
 
   delete(req, res, next) {
@@ -155,7 +156,7 @@ class UsersController {
       })
       .on(ERROR, next);
 
-    operation.execute(Number(req.params.id));
+    operation.execute(Number(req.query.id));
   }
 }
 

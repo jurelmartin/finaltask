@@ -6,10 +6,13 @@ const methodOverride = require('method-override');
 const controller = require('./utils/createControllerRoutes');
 const path = require('path');
 const openApiDoc = require('./openApi.json');
+const {authorization} = require('ftauth');
 
 module.exports = ({ config, authMiddleware, containerMiddleware, loggerMiddleware, errorHandler, openApiMiddleware }) => {
   const router = Router();
+
   router.use(containerMiddleware);
+
   router.use(authMiddleware);
 
   /* istanbul ignore if */
@@ -42,7 +45,8 @@ module.exports = ({ config, authMiddleware, containerMiddleware, loggerMiddlewar
   // apiRouter.use('/users', controller('controllers/UsersController'));
   // apiRouter.use(controller('controllers/AuthController.js'));
   apiRouter.use(controller('controllers/AuthController.js'));
-  apiRouter.use('/users', controller('controllers/UsersController.js'));
+  apiRouter.use(authorization.checkPermission());
+  apiRouter.use(controller('controllers/UsersController.js'));
   /* apiRoutes END */
 
   router.use('/api', apiRouter);
