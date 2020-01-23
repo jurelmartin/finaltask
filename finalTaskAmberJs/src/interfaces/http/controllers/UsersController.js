@@ -38,7 +38,7 @@ class UsersController {
       })
       .on(ERROR,  (result) => {
         res
-          .status(403)
+          .status(401)
           .json({
             type: result.type,
             details: result.details
@@ -102,6 +102,7 @@ class UsersController {
       })
       .on(VALIDATION_ERROR, (error) => {
         res.status(Status.BAD_REQUEST).json({
+          status: Status.BAD_REQUEST,
           type: 'ValidationError',
           details: error.details
         });

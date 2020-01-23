@@ -23,7 +23,7 @@ class LoginUsers extends Operation {
       if (!userExist) {
         const error = new Error;
         error.type = 'VALIDATION_ERROR';
-        error.details = 'Invalid password/username';
+        error.details = 'Invalid username';
         throw error;
       }
       const getPassword = userExist[0].dataValues.password;
@@ -33,7 +33,7 @@ class LoginUsers extends Operation {
       if(!checkPassword) {
         const error = new Error;
         error.type = 'VALIDATION_ERROR';
-        error.details = 'Invalid password/username';
+        error.details = 'Invalid password';
         throw error;   
       }
 
