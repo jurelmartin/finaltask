@@ -3,7 +3,7 @@ const validator = require("email-validator");
 
 const User = attributes({
   // Add atttributes here
-  id: Number,
+  // id: Number,
   email: {
     type: String,
     required: true
@@ -24,14 +24,16 @@ const User = attributes({
   middleName: {
     type: String,
     required: true
-},
-  createdAt: Date,
-  updatedAt: Date,
+}
+// ,
+//   createdAt: Date,
+//   updatedAt: Date,
 })(class User {
 
 // EMAIL VALIDATION NALANG KULANG NETO !
 
   isValidEmail() {
+
     isTrue = validator.validate(this.email);
     if(isTrue == true) {
       return isTrue;

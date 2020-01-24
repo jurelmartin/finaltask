@@ -17,19 +17,22 @@ class CreateUser extends Operation {
     const user = new User(data);
     const email = user.email;
 
-    
+    console.log(email);
 
     // console.log(user.firstLength());
 
 
-    // console.log(this.UserRepository.find({where: {email}}).toJSON());
-    // // console.log(getEmail);
+    const findEmail = await this.UserRepository.find({where: {email}});
+    console.log(findEmail);
+    if(findEmail != ""){
+      errors.push('Email already exists!');
+    }
     // console.log(user.isValidEmail());
 
     if(user.isValidEmail().length > 0){
       errors.push(user.isValidEmail());
     }
-    // const findEmail = await this.UserRepository.find({email});
+    // const findEmail = await this.UserRepository.findAll({where: {email}});
     // console.log(findEmail);
 
     // if(getEmail){
