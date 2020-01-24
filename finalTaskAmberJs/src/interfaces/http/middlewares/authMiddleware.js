@@ -9,8 +9,8 @@ module.exports = (req, res, next) => {
   paths.setPath([
     {roles: ['Admin'], method: 'GET', url: '/api/users'}, 
     {roles: ['Admin'], method: 'GET', url: '/api/user?id=' + req.query.id}, 
-    {roles: ['Admin'], method: 'PUT', url: '/api/update?=id' + req.query.id},
-    {roles: ['Admin'], method: 'DELETE', url: '/api/delete?=id'+ req.query.id}
+    {roles: ['Admin'], method: 'PUT', url: '/api/update?id=' + req.query.id},
+    {roles: ['Admin'], method: 'DELETE', url: '/api/delete?id='+ req.query.id}
   ]);
 
   const pathExist = authentication.checkPath(req.originalUrl, req.method);

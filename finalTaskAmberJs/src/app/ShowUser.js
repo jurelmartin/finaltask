@@ -1,4 +1,5 @@
 const { Operation } = require('@amberjs/core');
+const { authorization } = require('ftauth');
 
 class ShowUser extends Operation {
   constructor({ UserRepository }) {
@@ -7,11 +8,22 @@ class ShowUser extends Operation {
   }
 
   async execute(id) {
-    const { SUCCESS, NOT_FOUND } = this.events;
+    const { SUCCESS, NOT_FOUND, ERROR} = this.events;
+
+    if (!id) {
+      return this.emit(ERROR, {
+        type: 'ERROR',
+        details: 'Empty parameters.'
+      });
+    }
 
     try {
       const user = await this.UserRepository.getById(id);
+
+      authorization.setCurrentRole(user.dataValues.role);
+
       this.emit(SUCCESS, user);
+
     } catch(error) {
       this.emit(NOT_FOUND, {
         type: error.message,

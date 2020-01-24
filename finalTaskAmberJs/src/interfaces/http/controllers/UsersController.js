@@ -86,7 +86,12 @@ class UsersController {
           details: error.details
         });
       })
-      .on(ERROR, next);
+      .on(ERROR, (error) => {
+        res.status(Status.NOT_FOUND).json({
+          type: error.type,
+          details: error.details
+        });
+      } );
 
     operation.execute(Number(req.query.id));
   }
