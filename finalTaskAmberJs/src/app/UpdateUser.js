@@ -1,4 +1,6 @@
 const { Operation } = require('@amberjs/core');
+const User = require('src/domain/User');
+const functionCollections = require('./helper/functionHandler');
 
 class UpdateUser extends Operation {
   constructor({ UserRepository }) {
@@ -7,22 +9,31 @@ class UpdateUser extends Operation {
   }
 
   async execute(id, data) {
-    const {
-      SUCCESS, NOT_FOUND, VALIDATION_ERROR, ERROR
-    } = this.events;
+    const { SUCCESS, VALIDATION_ERROR } = this.events;
+
 
     try {
-      const user = await this.UserRepository.update(id, data);
-      this.emit(SUCCESS, user);
-    } catch(error) {
-      switch(error.message) {
-      case 'ValidationError':
-        return this.emit(VALIDATION_ERROR, error);
-      case 'NotFoundError':
-        return this.emit(NOT_FOUND, error);
-      default:
-        this.emit(ERROR, error);
+      const user = new User(data);
+
+      const result = new functionCollections(user);
+      const errors = result.validationFunctions();
+
+    
+      if(errors){
+        const error = new Error;
+        error.message = errors;
+        throw error;  
       }
+      
+     
+      const updatedUser = await this.UserRepository.update(id, data);
+      
+      this.emit(SUCCESS, updatedUser);
+    } catch(error) {
+      this.emit(VALIDATION_ERROR, {
+        type: 'VALIDATION ERROR',
+        details: error.message
+      });      
     }
   }
 }

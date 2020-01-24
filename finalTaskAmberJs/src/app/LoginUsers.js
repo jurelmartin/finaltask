@@ -32,7 +32,7 @@ class LoginUsers extends Operation {
     } catch(error) {
       this.emit(ERROR, {
         type: 'VALIDATION ERROR',
-        details: 'Wrong username/password'
+        details: 'Wrong Email or Password'
       });
     }
   }

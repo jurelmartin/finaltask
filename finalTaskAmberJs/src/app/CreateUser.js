@@ -1,6 +1,6 @@
 const { Operation } = require('@amberjs/core');
 const User = require('src/domain/User');
-
+const functionCollections = require('./helper/functionHandler');
 
 class CreateUser extends Operation {
   constructor({ UserRepository }) {
@@ -10,37 +10,19 @@ class CreateUser extends Operation {
 
   async execute(data) {
     const { SUCCESS, VALIDATION_ERROR } = this.events;
-
-    const errors = [];
-
+    
     try {
       const user = new User(data);
+
+      const result = new functionCollections(user);
+      const errors = result.validationFunctions();
       
 
-
-      if(user.isValidEmail().length > 0){
-        errors.push(user.isValidEmail());
-      }
-
-      if(user.pwLength().length > 0){
-        errors.push(user.pwLength());
-
-      }
-      if(user.firstLength().length > 0){
-        errors.push(user.firstLength());
-
-      }
-      if(user.lastLength().length > 0){
-        errors.push(user.lastLength());
-      }
-      if(user.midLength().length > 0){
-        errors.push(user.midLength());
-      }
-
-      if(errors.length > 0){
+      if(errors){
         const error = new Error;
         error.message = errors;
         throw error;  
+        
       }
 
       const newUser = await this.UserRepository.add(user.toJSON());
