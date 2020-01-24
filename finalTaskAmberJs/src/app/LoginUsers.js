@@ -20,22 +20,10 @@ class LoginUsers extends Operation {
 
     try {
       let userExist = await this.UserRepository.getAll({where: {email}});
-      if (!userExist) {
-        const error = new Error;
-        error.type = 'VALIDATION_ERROR';
-        error.details = 'Invalid username';
-        throw error;
-      }
+
       const getPassword = userExist[0].dataValues.password;
 
-      const checkPassword = await comparePassword(password, getPassword);
-        
-      if(!checkPassword) {
-        const error = new Error;
-        error.type = 'VALIDATION_ERROR';
-        error.details = 'Invalid password';
-        throw error;   
-      }
+      await comparePassword(password, getPassword);
 
       const token = authentication.generateToken(userExist[0].id, 'supersecretkey', '1h', '24h');
       this.emit(SUCCESS, token);
@@ -43,8 +31,8 @@ class LoginUsers extends Operation {
 
     } catch(error) {
       this.emit(ERROR, {
-        type: error.type,
-        details: error.details
+        type: 'VALIDATION ERROR',
+        details: 'Wrong username/password'
       });
     }
   }
