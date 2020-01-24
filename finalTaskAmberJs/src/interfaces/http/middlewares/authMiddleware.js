@@ -21,7 +21,7 @@ module.exports = (req, res, next) => {
     const decodedToken = authentication.verifyToken(authHeader, 'supersecretkey');
 
     if (!decodedToken) {
-      return res.status(403).json({ status: '403', message: 'Not Authenticated' });
+      return res.status(401).json({ status: 401, message: 'Not Authenticated' });
     }
 
     req.userId = decodedToken.id;
