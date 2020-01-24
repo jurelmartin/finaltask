@@ -27,7 +27,7 @@ class CreateUser extends Operation {
     // if(checkEmail) {
     //   errors.push('Email already exists!');
     // }
-    // console.log(user.isEmail());
+    // console.log(user.checkEmail());
     // if(user.isEmail()){
     //   errors.push(user.isEmail());
     // }

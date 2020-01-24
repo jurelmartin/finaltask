@@ -1,11 +1,11 @@
 const { attributes } = require('structure');
+const validator = require("email-validator");
 
 const User = attributes({
   // Add atttributes here
   id: Number,
   email: {
     type: String,
-    email: true,
     required: true
   },
   password: {
@@ -31,19 +31,16 @@ const User = attributes({
 
 // EMAIL VALIDATION NALANG KULANG NETO !
 
-  // isEmail() {
-  //   isTrue = !emailChecker.test(this.email);
-  //   if (emailChecker.test(this.email)){
-  //     return('Invalid email!');
+  // checkEmail() {
+  //   isTrue = !validator.validate(this.email);
+  //   if(isTrue) {
+  //     return isTrue;
   //   }
-  //   // isTrue = emailChecker.test(this.email) 
-
-  //   // if(!isTrue){
-  //   //   return true;
-  //   // }
-  //   return isTrue;
-    
-  // } 
+  // //   if(isTrue == "") {
+  // //     return isTrue=false;
+  // //   }
+  // // } 
+  // }
 
   pwLength() {
     isTrue = this.password.length >= User.MIN_PASSWORD_LENGTH;
@@ -79,7 +76,8 @@ const User = attributes({
 });
 
 let isTrue;
-const emailChecker = /^(?:[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/;
+const errorMessage = 'Invalid email!';
+const mailformat = /^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/;
 User.MIN_PASSWORD_LENGTH = 6;
 User.MIN_INPUT_LENGTH = 4;
 
