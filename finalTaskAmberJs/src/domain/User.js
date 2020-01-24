@@ -31,16 +31,16 @@ const User = attributes({
 
 // EMAIL VALIDATION NALANG KULANG NETO !
 
-  // checkEmail() {
-  //   isTrue = !validator.validate(this.email);
-  //   if(isTrue) {
-  //     return isTrue;
-  //   }
-  // //   if(isTrue == "") {
-  // //     return isTrue=false;
-  // //   }
-  // // } 
-  // }
+  isValidEmail() {
+    isTrue = validator.validate(this.email);
+    if(isTrue == true) {
+      return isTrue;
+    }
+    else{
+      return 'Email address invalid!';
+    }
+  }
+
 
   pwLength() {
     isTrue = this.password.length >= User.MIN_PASSWORD_LENGTH;
