@@ -33,7 +33,7 @@ module.exports = {
     }, {
       hooks: {
         beforeCreate: user => {
-          user.password = hashPassword(user.password)
+          user.password = hashPassword(user.password);
         }
       },
       tableName: 'users',

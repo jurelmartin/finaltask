@@ -15,7 +15,7 @@ class CreateUser extends Operation {
 
     try {
       const user = new User(data);
-      const email = user.email;
+      
 
 
       if(user.isValidEmail().length > 0){
