@@ -21,23 +21,31 @@ class CreateUser extends Operation {
 
     // console.log(user.firstLength());
 
-    // const findEmaill = await this.UserRepository.getAll({where: {email}});
-    // const getEmail = findEmaill[0].email;
 
-    console.log(getEmail);
-    console.log(user.checkEmail());
+    // console.log(this.UserRepository.find({where: {email}}).toJSON());
+    // // console.log(getEmail);
+    // console.log(user.isValidEmail());
 
     if(user.isValidEmail().length > 0){
       errors.push(user.isValidEmail());
     }
+    // const findEmail = await this.UserRepository.find({email});
+    // console.log(findEmail);
 
-    if(getEmail) {
-      errors.push('Email already exists!');
-    }
+    // if(getEmail){
+    //   errors.push('Email already exists!');
+    // }
+    // if(user.isValidEmail() == true) {
+ 
+    //       if(getEmail) {
+    //         errors.push('Email already exists!');
+    //       }
+          
+    // }
 
-
-   
-
+    // if(getEmail) {
+    //   errors.push('Email already exists!');
+    // }
 
     if(user.pwLength().length > 0){
       errors.push(user.pwLength());

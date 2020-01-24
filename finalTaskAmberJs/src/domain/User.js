@@ -37,7 +37,7 @@ const User = attributes({
       return isTrue;
     }
     else{
-      return 'Email address invalid!';
+      return 'Please input a vaid email!';
     }
   }
 
