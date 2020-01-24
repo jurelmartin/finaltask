@@ -12,11 +12,8 @@ module.exports = {
         type: DataTypes.INTEGER,
       }, 
       email : {
-        type: DataTypes.STRING,
-        unique: {
-          args: true,
-          msg: 'E-mail already exist'
-        }
+        type: DataTypes.STRING
+        
       },
       password : {
         type: DataTypes.STRING
@@ -36,7 +33,6 @@ module.exports = {
     }, {
       hooks: {
         beforeCreate: user => {
-
           user.password = hashPassword(user.password);
         }
       },
