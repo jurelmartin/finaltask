@@ -1,12 +1,16 @@
 const { attributes } = require('structure');
-const validator = require("email-validator");
+const validator = require('email-validator');
 
 const User = attributes({
   // Add atttributes here
   // id: Number,
   email: {
     type: String,
-    required: true
+    required: true,
+    unique: {
+      args: true,
+      message: 'E-mail already exist.'
+    }
   },
   password: {
     type: String,

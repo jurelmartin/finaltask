@@ -102,9 +102,8 @@ class UsersController {
           .json(result);
       })
       .on(VALIDATION_ERROR, (error) => {
-        res.status(Status.BAD_REQUEST).json({
-          status: Status.BAD_REQUEST,
-          type: 'ValidationError',
+        res.status(Status.NOT_FOUND).json({
+          type: error.type,
           details: error.details
         });
       })
