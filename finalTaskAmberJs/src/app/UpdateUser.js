@@ -1,6 +1,6 @@
 const { Operation } = require('@amberjs/core');
 const User = require('src/domain/User');
-const functionCollections = require('./helper/functionHandler');
+const validationClass = require('../domain/utils/validateInput');
 
 class UpdateUser extends Operation {
   constructor({ UserRepository }) {
@@ -15,8 +15,8 @@ class UpdateUser extends Operation {
     try {
       const user = new User(data);
 
-      const result = new functionCollections(user);
-      const errors = result.validationFunctions();
+      const result = new validationClass(user);
+      const errors = result.validationChecker();
 
     
       if(errors){

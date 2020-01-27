@@ -1,12 +1,12 @@
 // const User = require('src/domain/User');
 
-class functionCollections {
+class validationClass {
   constructor(user) {
     this.user = user;
     this.errors = []; 
   }
     
-  validationFunctions() {
+  validationChecker() {
     if(this.user.isValidEmail().length > 0){
       this.errors.push(this.user.isValidEmail());
     }
@@ -37,4 +37,4 @@ class functionCollections {
 }
 
 
-module.exports = functionCollections;
+module.exports = validationClass;

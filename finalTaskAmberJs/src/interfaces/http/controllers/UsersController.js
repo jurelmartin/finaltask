@@ -69,7 +69,7 @@ class UsersController {
     operation.execute();
   }
 
-  show(req, res, next) {
+  show(req, res) {
     const { operation } = req;
 
     const { SUCCESS, ERROR, NOT_FOUND } = operation.events;
