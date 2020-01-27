@@ -24,6 +24,8 @@ module.exports = {
   /**
    * Source directory of resources to be autoloaded
    */
+  key: process.env.KEY,
+
   sources: { 
     domain: ['src/domain'],
     app: ['src/app'],
