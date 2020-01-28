@@ -25,4 +25,4 @@ coverage/
 # IDE files
 .idea/
 
-.env
+# .env
