@@ -31,6 +31,17 @@ const User = attributes({
 })(class User {
 
   // EMAIL VALIDATION NALANG KULANG NETO !
+  isAdmin() {
+    isTrue = (authorization.getCurrentRole().toLowerCase() !== User.IS_ADMIN );
+    if(this.role){
+      if(isTrue) {
+        return('Not allowed to change roles');
+      }
+    }
+    return isTrue;
+    
+  }
+
 
   isValidEmail() {
 
@@ -80,5 +91,6 @@ let isTrue;
 
 User.MIN_PASSWORD_LENGTH = 6;
 User.MIN_INPUT_LENGTH = 4;
+User.IS_ADMIN = 'admin';
 
 module.exports = User;
