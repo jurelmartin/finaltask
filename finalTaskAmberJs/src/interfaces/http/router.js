@@ -8,7 +8,7 @@ const path = require('path');
 const openApiDoc = require('./openApi.json');
 const {authorization} = require('ftauth'); 
 
-module.exports = ({ config, notFound, authMiddleware, containerMiddleware, loggerMiddleware, errorHandler, openApiMiddleware }) => {
+module.exports = ({ config, notFound, ifProfile, authMiddleware, containerMiddleware, loggerMiddleware, errorHandler, openApiMiddleware }) => {
   const router = Router();
 
   router.use(containerMiddleware);
@@ -46,6 +46,7 @@ module.exports = ({ config, notFound, authMiddleware, containerMiddleware, logge
   // apiRouter.use(controller('controllers/AuthController.js'));
   apiRouter.use(controller('controllers/AuthController.js'));
   apiRouter.use(authorization.checkPermission());
+  apiRouter.use(ifProfile);
   apiRouter.use(controller('controllers/UsersController.js'));
   /* apiRoutes END */
 
