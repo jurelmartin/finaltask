@@ -25,9 +25,9 @@ const User = attributes({
     type: String,
     required: true
   }
-// ,
-//   createdAt: Date,
-//   updatedAt: Date,
+  ,
+  createdAt: Date,
+  updatedAt: Date,
 })(class User {
 
   // EMAIL VALIDATION NALANG KULANG NETO !

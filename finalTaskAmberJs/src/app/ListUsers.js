@@ -10,7 +10,7 @@ class ListUsers extends Operation {
     const { SUCCESS, ERROR } = this.events;
 
     try {
-      const users = await this.UserRepository.getAll({});
+      const users = await this.UserRepository.getAll({ attributes: {exclude: ['password', 'createdAt', 'updatedAt']} });
 
       this.emit(SUCCESS, users);
     } catch(error) {

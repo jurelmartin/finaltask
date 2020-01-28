@@ -62,7 +62,7 @@ class UsersController {
       .on(SUCCESS, (result) => {
         res
           .status(Status.OK)
-          .json(result);
+          .json({ status: Status.OK, details: { message: 'List of Users', result: result } });
       })
       .on(ERROR, next);
 
@@ -78,7 +78,7 @@ class UsersController {
       .on(SUCCESS, (result) => {
         res
           .status(Status.OK)
-          .json(result);
+          .json({ status: Status.OK, details: { message: 'List of User', result: result } });
       })
       .on(NOT_FOUND, (error) => {
         res.status(Status.NOT_FOUND).json({
@@ -87,7 +87,7 @@ class UsersController {
         });
       })
       .on(ERROR, (error) => {
-        res.status(Status.NOT_FOUND).json({
+        res.status(Status.ERROR).json({
           type: error.type,
           details: error.details
         });
@@ -104,7 +104,7 @@ class UsersController {
       .on(SUCCESS, (result) => {
         res
           .status(Status.CREATED)
-          .json(result);
+          .json({ status: Status.CREATED, details: { message: 'User Created!', userId: result } });
       })
       .on(VALIDATION_ERROR, (error) => {
         res.status(Status.NOT_FOUND).json({
@@ -125,7 +125,7 @@ class UsersController {
       .on(SUCCESS, (result) => {
         res
           .status(Status.ACCEPTED)
-          .json(result);
+          .json({ status: Status.ACCEPTED, details: { message: 'Following fields has been Updated!', result: Object.keys(req.body)} });
       })
       .on(VALIDATION_ERROR, (error) => {
         res.status(Status.BAD_REQUEST).json({
@@ -150,7 +150,9 @@ class UsersController {
 
     operation
       .on(SUCCESS, () => {
-        res.status(Status.ACCEPTED).end();
+        res
+          .status(Status.ACCEPTED)
+          .json({status: Status.ACCEPTED, details: { message: 'Successfully deleted!' }}).end();
       })
       .on(NOT_FOUND, (error) => {
         res.status(Status.NOT_FOUND).json({

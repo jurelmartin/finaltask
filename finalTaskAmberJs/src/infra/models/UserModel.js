@@ -36,12 +36,12 @@ module.exports = {
     }, {
       hooks: {
         beforeCreate: user => {
-
           user.password = hashPassword(user.password);
         },
         beforeUpdate: user => {
           user.password = hashPassword(user.password);
-        }
+        },
+
       },
       tableName: 'users',
       timestamps: true

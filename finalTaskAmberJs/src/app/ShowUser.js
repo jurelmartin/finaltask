@@ -18,7 +18,7 @@ class ShowUser extends Operation {
     }
 
     try {
-      const user = await this.UserRepository.getById(id);
+      const user = await this.UserRepository.getById(id, {attributes: {exclude: ['password', 'createdAt', 'updatedAt']}} );
 
       authorization.setCurrentRole(user.dataValues.role);
 
