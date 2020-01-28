@@ -33,6 +33,10 @@ const User = attributes({
 
   // EMAIL VALIDATION NALANG KULANG NETO !
   isAdmin() {
+    if(!authorization.getCurrentRole())
+    {
+      return true;
+    }
     isTrue = (authorization.getCurrentRole().toLowerCase() !== User.IS_ADMIN );
     if(this.role){
       if(isTrue) {

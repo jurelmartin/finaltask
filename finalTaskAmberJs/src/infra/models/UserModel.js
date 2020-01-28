@@ -1,4 +1,5 @@
 const { hashPassword } = require('../encryption/hashPassword');
+const uuid = require('uuid/v4');
 
 
 module.exports = {
@@ -7,9 +8,10 @@ module.exports = {
   definition: function(datasource, DataTypes) {
     const UserModel = datasource.define('UserModel', {
       id : {
+        allowNull: false,
         primaryKey: true,
-        autoIncrement: true,
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4
       }, 
       email : {
         type: DataTypes.STRING,
@@ -22,7 +24,7 @@ module.exports = {
         type: DataTypes.STRING
       },
       role: {
-        type: DataTypes.STRING
+        type: DataTypes.ENUM('admin', 'user')
       },
       firstName : {
         type: DataTypes.STRING
