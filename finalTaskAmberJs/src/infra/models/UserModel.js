@@ -1,6 +1,4 @@
 const { hashPassword } = require('../encryption/hashPassword');
-const uuid = require('uuid/v4');
-
 
 module.exports = {
   name: 'UserModel',
