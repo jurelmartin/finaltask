@@ -1,5 +1,4 @@
-const {authentication} = require('ftauth');
-const {paths} = require('ftauth');
+const {authentication, paths} = require('ftauth');
 
 // const userRepository = require('src/infra/repositories/UserRepository');
 // const userModel = require('src/infra/models/UserModel');
@@ -13,7 +12,7 @@ module.exports = (req, res, next) => {
     {roles: ['Admin'], method: 'DELETE', url: '/api/delete?id='+ req.query.id}
   ]);
 
-  const pathExist = authentication.checkPath(req.originalUrl, req.method);
+  const pathExist = paths.checkPath(req.originalUrl, req.method);
 
   if(pathExist){
     const authHeader = req.get('Authorization');
