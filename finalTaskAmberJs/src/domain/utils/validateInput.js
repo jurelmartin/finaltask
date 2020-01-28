@@ -1,4 +1,5 @@
 // const User = require('src/domain/User');
+const { authorization } = require('ftauth');
 
 class validationClass {
   constructor(user) {
@@ -9,6 +10,12 @@ class validationClass {
   validationChecker() {
     if(this.user.isValidEmail().length > 0){
       this.errors.push(this.user.isValidEmail());
+    }
+
+    if (authorization.getCurrentRole().toLowerCase() !== 'admin'){
+      if(this.user.role.length > 0){
+        return('Not allowed to change roles');
+      }
     }
 
     if(this.user.pwLength().length > 0){

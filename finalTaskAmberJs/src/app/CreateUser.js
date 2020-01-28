@@ -13,7 +13,7 @@ class CreateUser extends Operation {
     
     try {
       const user = new User(data);
-
+      
       const result = new validationClass(user);
       const errors = result.validationChecker();
       

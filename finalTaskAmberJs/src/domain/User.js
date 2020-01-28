@@ -1,6 +1,8 @@
 const { attributes } = require('structure');
 const validator = require('email-validator');
 
+const {authorization} = require('ftauth');
+
 const User = attributes({
   // Add atttributes here
   // id: Number,
@@ -42,8 +44,7 @@ const User = attributes({
       return 'Please input a vaid email!';
     }
   }
-
-
+  
   pwLength() {
     isTrue = this.password.length >= User.MIN_PASSWORD_LENGTH;
     if(!isTrue) {

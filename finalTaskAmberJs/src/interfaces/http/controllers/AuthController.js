@@ -1,5 +1,6 @@
 const express = require('express');
 const { BaseController } = require('@amberjs/core');
+const { authorization } =require('ftauth');
 
 class AuthController extends BaseController {
   

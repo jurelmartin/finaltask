@@ -21,7 +21,7 @@
     "cleanup": "node scripts/cleanup.js"
   },
   "repository": {},
-  "author": "Josh Mante <jmante@stratpoint.com>, Levin Calado <jcalado@stratpoint.com>",
+  "author": "Jerico Estanislao <jestanislao@stratpoint.com>, Jorelle Agustin <jagustin@stratpoint.com>",
   "license": "MIT",
   "dependencies": {
     "@amberjs/core": "^1.1.0",
