@@ -1,5 +1,6 @@
 const { attributes } = require('structure');
 const validator = require('email-validator');
+const { authorization } = require('ftauth');
 
 const User = attributes({
   // Add atttributes here
