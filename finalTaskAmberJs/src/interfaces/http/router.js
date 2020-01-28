@@ -6,7 +6,7 @@ const methodOverride = require('method-override');
 const controller = require('./utils/createControllerRoutes');
 const path = require('path');
 const openApiDoc = require('./openApi.json');
-const {authorization} = require('ftauth');
+const {authorization} = require('ftauth'); 
 
 module.exports = ({ config, notFound, authMiddleware, containerMiddleware, loggerMiddleware, errorHandler, openApiMiddleware }) => {
   const router = Router();
