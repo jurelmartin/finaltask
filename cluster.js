@@ -6,11 +6,19 @@ const maxMemory = process.env.WEB_MEMORY || 512;
 
 pm2.connect(() => {
   pm2.start({
+<<<<<<< HEAD
     script: 'app.js',
     instances: instances,
     max_memory_restart: `${maxMemory}M`,
     env: {
       NODE_ENV: 'production',
+=======
+    script: './src/app.js',
+    instances: instances,
+    max_memory_restart: `${maxMemory}M`,
+    env: {
+      NODE_ENV: 'prod',
+>>>>>>> 16160f82ab9a22f85d42247e59b7fac3a2e2fb21
       NODE_PATH: '.'
     },
   }, (err) => {

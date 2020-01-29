@@ -8,7 +8,11 @@
     "node": ">=7.6.0"
   },
   "scripts": {
+<<<<<<< HEAD
     "start": "cross-env NODE_PATH=. NODE_ENV=prod node src/app.js",
+=======
+    "start": "node cluster.js",
+>>>>>>> 16160f82ab9a22f85d42247e59b7fac3a2e2fb21
     "dev": "cross-env NODE_PATH=. NODE_ENV=local nodemon",
     "test": "npm run test:all",
     "test:all": "npm run test:unit && npm run test:features",
