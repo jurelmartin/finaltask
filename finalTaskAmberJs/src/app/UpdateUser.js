@@ -25,7 +25,7 @@ class UpdateUser extends Operation {
         throw error;  
       }
       
-     
+      console.log(isNaN(parseFloat(id)));
       const updatedUser = await this.UserRepository.update(id, data);
       
       this.emit(SUCCESS, updatedUser);
