@@ -13,7 +13,7 @@ module.exports = ({ config, notFound, checkIfProfile, authenticationMiddleware, 
 
   router.use(containerMiddleware);
 
-  router.use(authMiddleware);
+  router.use(authenticationMiddleware);
 
   /* istanbul ignore if */
   if(config.env !== 'test') {
