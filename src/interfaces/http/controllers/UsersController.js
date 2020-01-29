@@ -57,13 +57,20 @@ class UsersController {
 
   index(req, res, next) {
     const { operation } = req;
-    const { SUCCESS, ERROR} = operation.events;
+    const { SUCCESS, ERROR, NOT_FOUND} = operation.events;
 
     operation
       .on(SUCCESS, (result) => {
         res
           .status(Status.OK)
           .json({ status: Status.OK, details: { message: 'List of Users', result: result } });
+      })
+      .on(NOT_FOUND, (error) => {
+        res.status(Status.NOT_FOUND).json({
+          status: Status.NOT_FOUND,
+          type: 'NotFoundError',
+          details: error.details
+        });
       })
       .on(ERROR, next);
 
@@ -83,6 +90,7 @@ class UsersController {
       })
       .on(NOT_FOUND, (error) => {
         res.status(Status.NOT_FOUND).json({
+          status: Status.NOT_FOUND,
           type: 'NotFoundError',
           details: error.details
         });
@@ -132,6 +140,7 @@ class UsersController {
       })
       .on(NOT_FOUND, (error) => {
         res.status(Status.NOT_FOUND).json({
+          status: Status.NOT_FOUND,
           type: 'NotFoundError',
           details: error.details
         });
@@ -153,6 +162,7 @@ class UsersController {
       })
       .on(NOT_FOUND, (error) => {
         res.status(Status.NOT_FOUND).json({
+          status: Status.NOT_FOUND,
           type: 'NotFoundError',
           details: error.details
         });

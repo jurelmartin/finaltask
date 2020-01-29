@@ -7,14 +7,14 @@ class ListUsers extends Operation {
   }
 
   async execute() {
-    const { SUCCESS, ERROR } = this.events;
+    const { SUCCESS, NOT_FOUND } = this.events;
 
     try {
       const users = await this.UserRepository.getAll({ attributes: {exclude: ['password', 'createdAt', 'updatedAt']} });
 
       this.emit(SUCCESS, users);
     } catch(error) {
-      this.emit(ERROR, error);
+      this.emit(NOT_FOUND, error);
     }
   }
 }
