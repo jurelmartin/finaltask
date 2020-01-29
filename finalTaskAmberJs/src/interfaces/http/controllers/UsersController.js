@@ -146,8 +146,8 @@ class UsersController {
     operation
       .on(SUCCESS, () => {
         res
-          .status(Status.ACCEPTED)
-          .json({status: Status.ACCEPTED, details: { message: 'Successfully deleted!' }}).end();
+          .status(Status.OK)
+          .json({status: Status.OK, details: { message: 'Successfully deleted!' }}).end();
       })
       .on(NOT_FOUND, (error) => {
         res.status(Status.NOT_FOUND).json({
@@ -157,7 +157,7 @@ class UsersController {
       })
       .on(ERROR, next);
 
-    operation.execute(Number(req.query.id));
+    operation.execute(req.query.id);
   }
 }
 
