@@ -8,7 +8,7 @@
     "node": ">=7.6.0"
   },
   "scripts": {
-    "start": "node",
+    "start": "cross-env NODE_PATH=. NODE_ENV=prod node",
     "dev": "cross-env NODE_PATH=. NODE_ENV=local nodemon",
     "test": "npm run test:all",
     "test:all": "npm run test:unit && npm run test:features",
