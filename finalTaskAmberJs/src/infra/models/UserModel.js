@@ -1,5 +1,5 @@
 const { hashPassword } = require('../encryption/hashPassword');
-
+const crypto = require('crypto');
 
 module.exports = {
   name: 'UserModel',
@@ -7,10 +7,10 @@ module.exports = {
   definition: function(datasource, DataTypes) {
     const UserModel = datasource.define('UserModel', {
       id : {
-        allowNull: false,
+
         primaryKey: true,
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4
+        type: DataTypes.STRING
+
       }, 
       email : {
         type: DataTypes.STRING,
@@ -23,7 +23,7 @@ module.exports = {
         type: DataTypes.STRING
       },
       role: {
-        type: DataTypes.ENUM('admin', 'user')
+        type: DataTypes.STRING
       },
       firstName : {
         type: DataTypes.STRING
@@ -38,6 +38,7 @@ module.exports = {
       hooks: {
         beforeCreate: user => {
           user.password = hashPassword(user.password);
+          user.id = crypto.randomBytes(3*4).toString('base64');
         },
         beforeUpdate: user => {
           user.password = hashPassword(user.password);

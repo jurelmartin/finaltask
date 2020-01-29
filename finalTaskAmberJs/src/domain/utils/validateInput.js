@@ -15,6 +15,10 @@ class validationClass {
       this.errors.push(this.user.isAdmin());
     }
 
+    if(this.user.isValidRole().length > 0){
+      this.errors.push(this.user.isValidRole());
+    }
+
     if(this.user.pwLength().length > 0){
       this.errors.push(this.user.pwLength());
 

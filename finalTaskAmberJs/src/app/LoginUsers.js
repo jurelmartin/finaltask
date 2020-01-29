@@ -23,6 +23,7 @@ class LoginUsers extends Operation {
 
       const getPassword = userData.dataValues.password;
       const checkPassword = await comparePassword(password, getPassword);
+      const getUserId = userData.dataValues.id;
     
       if(!checkPassword) {
         this.emit(ERROR, {
@@ -33,6 +34,8 @@ class LoginUsers extends Operation {
       }
 
       const token = authentication.generateToken(userData.dataValues.id, process.env.KEY, process.env.ACCESS_TOKEN_EXP, process.env.REFRESH_TOKEN_EXP);
+      token.userId = getUserId;
+
       this.emit(SUCCESS, token);
 
 

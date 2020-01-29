@@ -33,8 +33,7 @@ const User = attributes({
 
   // EMAIL VALIDATION NALANG KULANG NETO !
   isAdmin() {
-    if(!authorization.getCurrentRole())
-    {
+    if(!authorization.getCurrentRole()) {
       return true;
     }
     isTrue = (authorization.getCurrentRole().toLowerCase() !== User.IS_ADMIN );
@@ -46,7 +45,18 @@ const User = attributes({
     return isTrue;
     
   }
-
+  isValidRole() {
+    if(this.role == undefined) {
+      return true;
+    }
+    isTrue = (this.role.toLowerCase() === User.IS_ADMIN || this.role.toLowerCase() === User.IS_USER);
+    if(!isTrue) {
+      return ('Invalid Role Input, Must be Admin or User only!');
+    }
+    return isTrue;
+      
+    
+  }
 
   isValidEmail() {
 
@@ -97,5 +107,7 @@ let isTrue;
 User.MIN_PASSWORD_LENGTH = 6;
 User.MIN_INPUT_LENGTH = 4;
 User.IS_ADMIN = 'admin';
+User.IS_USER = 'user';
+
 
 module.exports = User;

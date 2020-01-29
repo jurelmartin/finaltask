@@ -34,8 +34,8 @@ class UsersController {
     operation
       .on(SUCCESS, (result) => {
         res
-          .status(200)
-          .json(result);
+          .status(Status.OK)
+          .json({ status: Status.OK, details: { message: 'Logged in successfully!', result: result} });
       })
       .on(ERROR,  (result) => {
         res
@@ -122,7 +122,7 @@ class UsersController {
     const { SUCCESS, ERROR, VALIDATION_ERROR, NOT_FOUND } = operation.events;
 
     operation
-      .on(SUCCESS, (result) => {
+      .on(SUCCESS, () => {
         res
           .status(Status.ACCEPTED)
           .json({ status: Status.ACCEPTED, details: { message: 'Following fields has been Updated!', result: Object.keys(req.body)} });
