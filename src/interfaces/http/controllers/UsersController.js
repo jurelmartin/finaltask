@@ -39,8 +39,9 @@ class UsersController {
       })
       .on(ERROR,  (result) => {
         res
-          .status(401)
+          .status(Status.UNAUTHORIZED)
           .json({
+            status: Status.UNAUTHORIZED,
             type: result.type,
             details: result.details
           });

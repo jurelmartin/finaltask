@@ -27,7 +27,6 @@ class LoginUsers extends Operation {
     
       if(!checkPassword) {
         this.emit(ERROR, {
-    
           type: 'VALIDATION ERROR',
           details: 'Invalid Email or Password'
         });
