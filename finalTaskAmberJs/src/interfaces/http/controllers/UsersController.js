@@ -69,7 +69,7 @@ class UsersController {
     operation.execute();
   }
 
-  show(req, res) {
+  show(req, res, next) {
     const { operation } = req;
 
     const { SUCCESS, ERROR, NOT_FOUND } = operation.events;
@@ -86,14 +86,9 @@ class UsersController {
           details: error.details
         });
       })
-      .on(ERROR, (error) => {
-        res.status(Status.ERROR).json({
-          type: error.type,
-          details: error.details
-        });
-      } );
+      .on(ERROR, next);
 
-    operation.execute(Number(req.query.id));
+    operation.execute((req.query.id));
   }
 
   create(req, res, next) {
@@ -141,7 +136,7 @@ class UsersController {
       })
       .on(ERROR, next);
 
-    operation.execute(Number(req.query.id), req.body);
+    operation.execute((req.query.id), req.body);
   }
 
   delete(req, res, next) {
