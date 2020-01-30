@@ -29,7 +29,7 @@ class UsersController {
   
   login(req, res) {
     const { operation } = req;
-    const { SUCCESS, ERROR } = operation.events;
+    const { SUCCESS, ERROR, NOT_FOUND } = operation.events;
 
     operation
       .on(SUCCESS, (result) => {
@@ -45,7 +45,8 @@ class UsersController {
             type: result.type,
             details: result.details
           });
-      });
+      })
+
 
     operation.execute(req.body);
   }

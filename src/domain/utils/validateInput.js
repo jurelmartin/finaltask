@@ -7,6 +7,10 @@ class validationClass {
   }
     
   validationChecker() {
+    if(this.user.isAuth().length > 0){
+      this.errors.push(this.user.isAuth());
+    }
+
     if(this.user.isValidEmail().length > 0){
       this.errors.push(this.user.isValidEmail());
     }

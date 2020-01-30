@@ -1,5 +1,6 @@
 const { attributes } = require('structure');
 const validator = require('email-validator');
+const { comparePassword } = require('../infra/encryption/hashPassword');
 const { authorization } = require('ftauth');
 
 const User = attributes({
@@ -31,7 +32,17 @@ const User = attributes({
   updatedAt: Date,
 })(class User {
 
-  // EMAIL VALIDATION NALANG KULANG NETO !
+
+  isAuth() {
+    isTrue = (this.email !== undefined && this.password !== undefined);
+
+    if(!isTrue){
+      return ('Invalid Email or Password');
+    }
+    return isTrue;
+    
+  }
+
   isAdmin() {
     if(!authorization.getCurrentRole()) {
       return true;
@@ -59,6 +70,9 @@ const User = attributes({
   }
 
   isValidEmail() {
+    if(this.email == undefined){
+      return true;
+    }
 
     isTrue = validator.validate(this.email);
     if(isTrue == true) {
@@ -70,6 +84,9 @@ const User = attributes({
   }
 
   pwLength() {
+    if(this.password == undefined) {
+      return true;
+    }
     isTrue = this.password.length >= User.MIN_PASSWORD_LENGTH;
     if(!isTrue) {
       return('Minimum password length is 6!');
@@ -78,6 +95,9 @@ const User = attributes({
   }
 
   firstLength() {
+    if(this.firstName == undefined) {
+      return true
+    }
     isTrue = this.firstName.length >= User.MIN_INPUT_LENGTH;
     if(!isTrue) {
       return('Minimum firstName length is 4!');
@@ -85,6 +105,9 @@ const User = attributes({
     return isTrue;
   }
   lastLength() {
+    if(this.lastName == undefined) {
+      return true;
+    }
     isTrue = this.lastName.length >= User.MIN_INPUT_LENGTH;
     if(!isTrue) {
       return('Minimum lastName length is 4!');
@@ -92,6 +115,9 @@ const User = attributes({
     return isTrue;
   }
   midLength() {
+    if(this.middleName == undefined) {
+      return true;
+    }
     isTrue = this.middleName.length >= User.MIN_INPUT_LENGTH;
     if(!isTrue) {
       return('Minimum middleName length is 4!');

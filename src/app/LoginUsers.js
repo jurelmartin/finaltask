@@ -2,6 +2,7 @@ const { Operation } = require('@amberjs/core');
 const User = require('src/domain/User');
 const { authentication } = require('ftauth');
 const { comparePassword } = require('../infra/encryption/hashPassword');
+const validationClass = require('../domain/utils/validateInput');
 
 class LoginUsers extends Operation {
   constructor({ UserRepository }) {
@@ -21,27 +22,36 @@ class LoginUsers extends Operation {
     try {
       const userData = (await this.UserRepository.getAll({ where: { email } }))[0];
 
-      const getPassword = userData.dataValues.password;
-      const checkPassword = await comparePassword(password, getPassword);
-      const getUserId = userData.dataValues.id;
+      if(userData !== undefined){
+        const setUser = userData.dataValues;
+        const newUserPassword = setUser.password;
+        
+        const checkPassword = await comparePassword(password, newUserPassword);
+        if(checkPassword){
+          const getUserId = setUser.id;
+          const token = authentication.generateToken(setUser.id, 'supersecretkey', '1hr');
+          token.userId = getUserId;
     
-      if(!checkPassword) {
-        this.emit(ERROR, {
-          type: 'VALIDATION ERROR',
-          details: 'Invalid Email or Password'
-        });
+          this.emit(SUCCESS, token);
+        }
       }
 
-      const token = authentication.generateToken(userData.dataValues.id, process.env.KEY, process.env.ACCESS_TOKEN_EXP, process.env.REFRESH_TOKEN_EXP);
-      token.userId = getUserId;
+      const newUser = {email: undefined, password: undefined};
+      const user = new User(newUser);
 
-      this.emit(SUCCESS, token);
-
-
+      const result = new validationClass(user);
+      const errors = result.validationChecker();
+      
+      if(errors){
+        const error = new Error;
+        error.message = errors;
+        throw error;  
+      }
+     
     } catch(error) {
       this.emit(ERROR, {
         type: 'VALIDATION ERROR',
-        details: 'Invalid Email or Password'
+        details: error.message
       });
     }
   }
