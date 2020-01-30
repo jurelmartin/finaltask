@@ -232,14 +232,29 @@
             "description": "Unique Identifier representing a user",
             "x-primary-key": true
           },
+          "email": {
+            "type": "string",
+            "required": true
+          },
+          "password": {
+            "type": "string",
+            "required": true
+          },
+          "role": {
+            "type": "string",
+            "required": true
+          },
           "firstName": {
-            "type": "string"
+            "type": "string",
+            "required": true
           },
           "middleName": {
-            "type": "string"
+            "type": "string",
+            "required": true
           },
           "lastName": {
-            "type": "string"
+            "type": "string",
+            "required": true
           }
         }
       },

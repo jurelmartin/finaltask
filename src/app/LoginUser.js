@@ -3,7 +3,9 @@ const User = require('src/domain/User');
 const { authentication } = require('ftauth');
 const { comparePassword } = require('../infra/encryption/hashPassword');
 
-class LoginUsers extends Operation {
+
+
+class LoginUser extends Operation {
   constructor({ UserRepository }) {
     super();
     this.UserRepository = UserRepository;
@@ -65,6 +67,6 @@ class LoginUsers extends Operation {
   }
 }
 
-LoginUsers.setEvents(['SUCCESS', 'ERROR', 'VALIDATION_ERROR', 'NOT_FOUND']);
+LoginUser.setEvents(['SUCCESS', 'ERROR', 'VALIDATION_ERROR', 'NOT_FOUND']);
 
-module.exports = LoginUsers;
+module.exports = LoginUser;

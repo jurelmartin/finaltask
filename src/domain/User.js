@@ -1,11 +1,10 @@
 const { attributes } = require('structure');
 const validator = require('email-validator');
-const { comparePassword } = require('../infra/encryption/hashPassword');
 const { authorization } = require('ftauth');
 
 const User = attributes({
   // Add atttributes here
-  // id: Number,
+
   email: {
     type: String,
     required: true
@@ -19,15 +18,15 @@ const User = attributes({
     type: String,
     required: true
   },
+
+  middleName: {
+    type: String,
+    required: true
+  },
   lastName: {
     type: String,
     required: true
   },
-  middleName: {
-    type: String,
-    required: true
-  }
-  ,
   createdAt: Date,
   updatedAt: Date,
 })(class User {

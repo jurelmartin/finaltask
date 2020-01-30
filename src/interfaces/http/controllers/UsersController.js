@@ -15,7 +15,7 @@ class UsersController {
     };
     const router = Router();
 
-    router.post('/login', this.injector('LoginUsers'), this.login);
+    router.post('/login', this.injector('LoginUser'), this.login);
     // super();
     
     router.get('/users', this.injector('ListUsers'), this.index);
