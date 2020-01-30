@@ -46,8 +46,6 @@ class UsersController {
             details: result.details
           });
       })
-
-
     operation.execute(req.body);
   }
   /**
@@ -58,7 +56,7 @@ class UsersController {
 
   index(req, res, next) {
     const { operation } = req;
-    const { SUCCESS, ERROR, NOT_FOUND} = operation.events;
+    const { SUCCESS, ERROR, NOT_FOUND } = operation.events;
 
     operation
       .on(SUCCESS, (result) => {
@@ -73,7 +71,32 @@ class UsersController {
           details: error.details
         });
       })
-      .on(ERROR, next);
+      .on(ERROR, (error) => {
+        res.status(error.status).json({
+          status: error.status,
+          type: error.type,
+          details: error.details
+        });
+      })
+
+      if(!req.isAuthenticated){
+        return res
+            .status(401)
+            .json({
+              status: 401,
+              type: "AUTHENTICATION ERROR",
+              details: 'Not Authenticated'
+            });
+      }
+      if(req.role.toLowerCase() !== 'admin'){
+        return res
+            .status(403)
+            .json({
+              status: 403,
+              type: "AUTHORIZATION ERROR",
+              details: 'Not Authorized'
+            });
+      }
 
     operation.execute();
   }
@@ -98,6 +121,24 @@ class UsersController {
       })
       .on(ERROR, next);
 
+      if(!req.isAuthenticated){
+        return res
+            .status(401)
+            .json({
+              status: 401,
+              type: "AUTHENTICATION ERROR",
+              details: 'Not Authenticated'
+            });
+      }
+        if(req.role.toLowerCase() !== 'admin'){
+          return res
+            .status(403)
+            .json({
+              status: 403,
+              type: "AUTHORIZATION ERROR",
+              details: 'Not Authorized'
+            });
+      }
     operation.execute((req.query.id));
   }
 
@@ -107,7 +148,7 @@ class UsersController {
 
     operation
       .on(SUCCESS, (result) => {
-        res
+        return res
           .status(Status.CREATED)
           .json({ status: Status.CREATED, details: { message: 'User Created!', userId: result } });
       })
@@ -129,7 +170,7 @@ class UsersController {
 
     operation
       .on(SUCCESS, () => {
-        res
+        return res
           .status(Status.ACCEPTED)
           .json({ status: Status.ACCEPTED, details: { message: 'Following fields has been Updated!', result: Object.keys(req.body)} });
       })
@@ -147,6 +188,29 @@ class UsersController {
         });
       })
       .on(ERROR, next);
+    
+
+      if(!req.isAuthenticated){
+        return res
+            .status(401)
+            .json({
+              status: 401,
+              type: "AUTHENTICATION ERROR",
+              details: 'Not Authenticated'
+            });
+      }
+      if(req.role.toLowerCase() !== 'admin'){
+      if(!req.isProfile){
+        return res
+            .status(403)
+            .json({
+              status: 403,
+              type: "AUTHORIZATION ERROR",
+              details: 'Not Authorized'
+            });
+      }
+    }
+
 
     operation.execute((req.query.id), req.body);
   }
@@ -170,6 +234,25 @@ class UsersController {
       })
       .on(ERROR, next);
 
+
+      if(!req.isAuthenticated){
+        return res
+            .status(401)
+            .json({
+              status: 401,
+              type: "AUTHENTICATION ERROR",
+              details: 'Not Authenticated'
+            });
+      }
+      if(req.role.toLowerCase() !== 'admin'){
+        return res
+            .status(403)
+            .json({
+              status: 403,
+              type: "AUTHORIZATION ERROR",
+              details: 'Not Authorized'
+            });
+      }
     operation.execute(req.query.id);
   }
 }

@@ -1,5 +1,4 @@
 const { Operation } = require('@amberjs/core');
-const { authorization } = require('ftauth');
 
 class ShowUser extends Operation {
   constructor({ UserRepository }) {
@@ -19,8 +18,6 @@ class ShowUser extends Operation {
 
     try {
       const user = await this.UserRepository.getById(id, {attributes: {exclude: ['password', 'createdAt', 'updatedAt']}} );
-
-      authorization.setCurrentRole(user.dataValues.role);
 
       this.emit(SUCCESS, user);
 
