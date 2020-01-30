@@ -28,17 +28,20 @@ class LoginUsers extends Operation {
       }else {
         const setUser =  userData.dataValues;
         const newUserPassword =  setUser.password;
-        this.email =  true;
+
         
         const checkPassword =  comparePassword(password, newUserPassword);
         if(!checkPassword) {
           this.password =  false;
+
         }else {
 
           const getUserId =  setUser.id;
           const token =  authentication.generateToken(setUser.id, 'supersecretkey', '1hr');
           token.userId =  getUserId;
-        
+
+          
+          this.email =  true;
           this.password =  true;
           return this.emit(SUCCESS, token);
         }
@@ -53,7 +56,7 @@ class LoginUsers extends Operation {
         error.message =  result;
         throw error;  
       }
-      
+
     } catch(error) {
        this.emit(ERROR, {
         type: 'VALIDATION ERROR',
