@@ -34,9 +34,8 @@ const User = attributes({
 
 
   isAuth() {
-    isTrue = (this.email !== undefined && this.password !== undefined);
-
-    if(!isTrue){
+    isTrue = (this.email && this.password);
+    if(isTrue !== true){
       return ('Invalid Email or Password');
     }
     return isTrue;

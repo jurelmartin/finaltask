@@ -13,8 +13,8 @@ class LoginUsers extends Operation {
   async execute(data) {
     const { SUCCESS, ERROR } = this.events;
 
-    const user = new User(data).toJSON();
-    
+    const user = await new User(data).toJSON();
+
     const email    = user.email;
     const password = user.password;
 
@@ -22,34 +22,40 @@ class LoginUsers extends Operation {
     try {
       const userData = (await this.UserRepository.getAll({ where: { email } }))[0];
 
-      if(userData !== undefined){
-        const setUser = userData.dataValues;
-        const newUserPassword = setUser.password;
+      if(userData === undefined) {
+         this.email = false;
+ 
+      }else {
+        const setUser =  userData.dataValues;
+        const newUserPassword =  setUser.password;
+        this.email =  true;
         
-        const checkPassword = await comparePassword(password, newUserPassword);
-        if(checkPassword){
-          const getUserId = setUser.id;
-          const token = authentication.generateToken(setUser.id, 'supersecretkey', '1hr');
-          token.userId = getUserId;
-    
-          this.emit(SUCCESS, token);
+        const checkPassword =  comparePassword(password, newUserPassword);
+        if(!checkPassword) {
+          this.password =  false;
+        }else {
+
+          const getUserId =  setUser.id;
+          const token =  authentication.generateToken(setUser.id, 'supersecretkey', '1hr');
+          token.userId =  getUserId;
+        
+          this.password =  true;
+          return this.emit(SUCCESS, token);
         }
       }
+           
+      const newUser =  {email: this.email, password: this.password};
+      const user =  await new User(newUser);
+      const result =  user.isAuth();
 
-      const newUser = {email: undefined, password: undefined};
-      const user = new User(newUser);
-
-      const result = new validationClass(user);
-      const errors = result.validationChecker();
-      
-      if(errors){
-        const error = new Error;
-        error.message = errors;
+      if(result) {
+        const error =  new Error;
+        error.message =  result;
         throw error;  
       }
-     
+      
     } catch(error) {
-      this.emit(ERROR, {
+       this.emit(ERROR, {
         type: 'VALIDATION ERROR',
         details: error.message
       });

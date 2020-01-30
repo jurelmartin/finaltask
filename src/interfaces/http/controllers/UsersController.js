@@ -35,7 +35,7 @@ class UsersController {
       .on(SUCCESS, (result) => {
         res
           .status(Status.OK)
-          .json({ status: Status.OK, details: { message: 'Logged in successfully!', result: result} });
+          .json({ status: Status.OK, details: { message: 'Logged in successfully!', result: result} }).end();
       })
       .on(ERROR,  (result) => {
         res
@@ -44,8 +44,9 @@ class UsersController {
             status: Status.UNAUTHORIZED,
             type: result.type,
             details: result.details
-          });
+          }).end();
       })
+
 
 
     operation.execute(req.body);
