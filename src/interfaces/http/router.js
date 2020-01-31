@@ -11,12 +11,12 @@ const unless = require('express-unless');
 
 
 
-module.exports = ({ config, notFound, tryAuthMid, containerMiddleware, loggerMiddleware, errorHandler, openApiMiddleware }) => {
+module.exports = ({ config, notFound, authenticationMiddleware, containerMiddleware, loggerMiddleware, errorHandler, openApiMiddleware }) => {
   const router = Router();
-  tryAuthMid.unless = unless;
+  authenticationMiddleware.unless = unless;
 
   router.use(containerMiddleware);
-  router.use(tryAuthMid.unless({ path: ['/api/login', '/api/add'] }));
+  router.use(authenticationMiddleware.unless({ path: ['/api/login', '/api/add'] }));
   // router.use(tryAuthMid);
 
   // router.use(authenticationMiddleware);
@@ -51,12 +51,7 @@ module.exports = ({ config, notFound, tryAuthMid, containerMiddleware, loggerMid
    */
 
   // apiRouter.use('/users', controller('controllers/UsersController'));
-  // apiRouter.use(controller('controllers/AuthController.js'));
-
-  apiRouter.use(controller('controllers/LoginController.js'));
-  // apiRouter.use(unless({ path: ['/api/login'] }));
-
-
+  apiRouter.use(controller('controllers/AuthenticationController.js'));
   apiRouter.use(authorization.checkPermission());
 
   apiRouter.use(controller('controllers/UsersController.js'));

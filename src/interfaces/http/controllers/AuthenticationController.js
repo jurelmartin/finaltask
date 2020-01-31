@@ -13,18 +13,16 @@ class AuthController extends BaseController {
         const {operation} = req;
         const { SUCCESS, ERROR, NOT_FOUND } = operation.events;
         operation
-          .on(SUCCESS, () => {
+          .on(SUCCESS, (result) => {
+            req.role = result.role;
             return next();
           })
           .on(ERROR, () => {
             return next();
           })
           .on(NOT_FOUND, () => {
-            return res.status(401).json({
-              status: 401,
-              message: 'Not Authenticated'
-            });
-
+            req.isAuthenticated = false;
+            return next();
           });
         operation.execute(req.userId);
       } );

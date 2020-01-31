@@ -1,8 +1,6 @@
-
 const { Router } = require('express');
 const Status = require('http-status');
 
-// const { BaseController } = require('@amberjs/core');
 
 
 class UsersController {
@@ -15,14 +13,12 @@ class UsersController {
     };
     const router = Router();
 
-    // router.post('/login', this.injector('LoginUser'), this.login);
-    // super();
-    
+    router.post('/login', this.injector('LoginUser'), this.login)
     router.get('/users', this.injector('ListUsers'), this.index);
-    router.post('/add', this.injector('CreateUser'), this.create);
-    router.get('/user', this.injector('ShowUser'), this.show);
-    router.put('/update', this.injector('UpdateUser'), this.update);      
-    router.delete('/delete', this.injector('DeleteUser'), this.delete);
+    router.post('/users', this.injector('CreateUser'), this.create);
+    router.get('/users/:id', this.injector('ShowUser'), this.show);
+    router.put('/users/:id', this.injector('UpdateUser'), this.update);      
+    router.delete('/users/:id', this.injector('DeleteUser'), this.delete);
 
     return router;
   }
@@ -75,6 +71,16 @@ class UsersController {
         });
       })
       .on(ERROR, next);
+    
+      if(req.role.toLowerCase() !== 'admin'){
+        return res
+            .status(403)
+            .json({
+              status: 403,
+              type: "AUTHORIZATION ERROR",
+              details: 'Not Authorized'
+            });
+      }
 
     operation.execute();
   }
@@ -98,6 +104,16 @@ class UsersController {
         });
       })
       .on(ERROR, next);
+
+      if(req.role.toLowerCase() !== 'admin'){
+        return res
+            .status(403)
+            .json({
+              status: 403,
+              type: "AUTHORIZATION ERROR",
+              details: 'Not Authorized'
+            });
+      }
 
     operation.execute((req.query.id));
   }
@@ -149,6 +165,17 @@ class UsersController {
       })
       .on(ERROR, next);
 
+      if(req.role.toLowerCase() !== 'admin'){
+        if(req.params.id !== req.userId){
+          return res
+              .status(403)
+              .json({
+                status: 403,
+                type: "AUTHORIZATION ERROR",
+                details: 'Not Authorized'
+              });
+        }
+      }
     operation.execute((req.query.id), req.body);
   }
 
@@ -170,6 +197,16 @@ class UsersController {
         });
       })
       .on(ERROR, next);
+
+      if(req.role.toLowerCase() !== 'admin'){
+        return res
+            .status(403)
+            .json({
+              status: 403,
+              type: "AUTHORIZATION ERROR",
+              details: 'Not Authorized'
+            });
+      }
 
     operation.execute(req.query.id);
   }
