@@ -6,11 +6,37 @@
   },
   "servers": [
     {
-      "description": "Local server",
-      "url": "/api"
+
+      "url": "https://final-amberjs-task.herokuapp.com"
     }
   ],
   "paths": {
+    "/api/login" : {
+      "post" : {
+        "description" : "Login User",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body"
+              },
+              "examples" : {
+                "0" : {
+                  "value" : "{\n\t\"email\": \"jagustin@stratpoint.com\",\n\t\"password\": \"111111\"\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+
+            }
+          }
+        }
+      }
+    },
     "/users": {
       "get": {
         "operationId": "listUsers",
@@ -227,11 +253,32 @@
       "User": {
         "properties": {
           "id": {
-            "type": "integer",
-            "format": "int32",
-            "description": "Unique Identifier representing a user",
+            "type": "UUID",
+            "description": "Universally Unique Identifier representing a user",
             "x-primary-key": true
           },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "middleName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        }
+      },
+      "NewUser": {
+        "properties": {
           "email": {
             "type": "string",
             "required": true
@@ -258,16 +305,15 @@
           }
         }
       },
-      "NewUser": {
+      "LoginUser": {
         "properties": {
-          "firstName": {
-            "type": "string"
+          "email": {
+            "type": "string",
+            "required": true
           },
-          "middleName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
+          "password": {
+            "type": "string",
+            "required": true
           }
         }
       }
