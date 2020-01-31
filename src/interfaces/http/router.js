@@ -16,7 +16,7 @@ module.exports = ({ config, notFound, authenticationMiddleware, containerMiddlew
   authenticationMiddleware.unless = unless;
 
   router.use(containerMiddleware);
-  router.use(authenticationMiddleware.unless({ path: ['/','/api/login', '/api/add'] }));
+  router.use(authenticationMiddleware.unless({ path: ['/','/api/login', { url: '/api/users', methods: ['POST'] }]}));
   // router.use(tryAuthMid);
 
   // router.use(authenticationMiddleware);
