@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const Status = require('http-status');
+const { authorization } = require('ftauth');
 
 
 
@@ -115,7 +116,7 @@ class UsersController {
             });
       }
 
-    operation.execute((req.query.id));
+    operation.execute((req.params.id));
   }
 
   create(req, res, next) {
@@ -176,7 +177,8 @@ class UsersController {
               });
         }
       }
-    operation.execute((req.query.id), req.body);
+    authorization.setCurrentRole(req.role);
+    operation.execute((req.params.id), req.body);
   }
 
   delete(req, res, next) {
@@ -208,7 +210,7 @@ class UsersController {
             });
       }
 
-    operation.execute(req.query.id);
+    operation.execute(req.params.id);
   }
 }
 
