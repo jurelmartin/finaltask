@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const DeleteUser = require('src/app/user/DeleteUser');
+const DeleteUser = require('src/app/DeleteUser');
 
 describe('App :: User :: DeleteUser', () => {
   var deleteUser;
