@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const User = require('src/domain/user/User');
+const User = require('src/domain/User');
 
 describe('Domain :: User', () => {
   describe('#isLegal', () => {

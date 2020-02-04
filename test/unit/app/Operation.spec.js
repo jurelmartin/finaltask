@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const Operation = require('src/app/Operation');
+const {Operation} = require('@amberjs/core');
 
 describe('App :: Operation', () => {
   var CustomOperation;
