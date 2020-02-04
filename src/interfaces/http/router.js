@@ -17,9 +17,13 @@ module.exports = ({ config, notFound, authenticationMiddleware, containerMiddlew
 
   router.use(containerMiddleware);
 <<<<<<< HEAD
+<<<<<<< HEAD
 
   router.use(authenticationMiddleware.unless({ path: ['/','/api/login', { url: '/api/users', methods: ['POST'] }]}));
 
+=======
+  router.use(authenticationMiddleware.unless({ path: ['/api/login', '/api/add'] }));
+>>>>>>> parent of 664ad28b... deploy!
 =======
   router.use(authenticationMiddleware.unless({ path: ['/api/login', '/api/add'] }));
 >>>>>>> parent of 664ad28b... deploy!
