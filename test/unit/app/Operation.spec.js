@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const Operation = require('src/app/Operation');
+const {Operation} = require('@amberjs/core');
 
 describe('App :: Operation', () => {
   var CustomOperation;
@@ -9,7 +9,7 @@ describe('App :: Operation', () => {
 
     };
 
-    CustomOperation.setOutputs(['SUCCESS']);
+    CustomOperation.setEvents(['SUCCESS', 'VALIDATION ERROR']);
   });
 
   describe('#on', () => {
@@ -28,7 +28,7 @@ describe('App :: Operation', () => {
         const operation = new CustomOperation();
 
         expect(() => {
-          operation.on('INVALID', () => {});
+          operation.on(operation.outputs.INVALID, () => {});
         }).to.throw(Error, /Invalid output "INVALID" to operation CustomOperation/);
       });
     });
