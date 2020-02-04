@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const UpdateUser = require('src/app/UpdateUser');
+const UpdateUser = require('src/app/user/UpdateUser');
 
 describe('App :: User :: UpdateUser', () => {
   var updateUser;
