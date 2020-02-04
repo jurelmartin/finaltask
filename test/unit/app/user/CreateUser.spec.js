@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const CreateUser = require('src/app/user/CreateUser');
+const CreateUser = require('src/app/CreateUser');
 
 describe('App :: User :: CreateUser', () => {
   var createUser;
@@ -11,15 +11,17 @@ describe('App :: User :: CreateUser', () => {
       };
 
       createUser = new CreateUser({
-        usersRepository: MockUsersRepository
+        UserRepository: MockUsersRepository
       });
     });
 
     it('creates the user and emits SUCCESS', (done) => {
-      const userData = { name: 'New User' };
+      const userData = {       
+      email: "etanwislao@stratpoint.com",
+      password: "123456" };
 
-      createUser.on(createUser.outputs.SUCCESS, (response) => {
-        expect(response.name).to.equal('New User');
+      createUser.on(createUser.events.SUCCESS, (response) => {
+        expect(response.email).to.equal(userData.email);
         done();
       });
 
@@ -34,15 +36,17 @@ describe('App :: User :: CreateUser', () => {
       };
 
       createUser = new CreateUser({
-        usersRepository: MockUsersRepository
+        UserRepository: MockUsersRepository
       });
     });
 
     it('emits VALIDATION_ERROR with the error', (done) => {
-      const userData = { name: 'New User' };
+      const userData = {       
+        email: "etanwislao@stratpoint.com",
+        password: "12345" };
 
-      createUser.on(createUser.outputs.VALIDATION_ERROR, (response) => {
-        expect(response.message).to.equal('ValidationError');
+      createUser.on(createUser.events.VALIDATION_ERROR, (response) => {
+        expect(response.type).to.equal('VALIDATION ERROR');
         done();
       });
 
@@ -57,19 +61,8 @@ describe('App :: User :: CreateUser', () => {
       };
 
       createUser = new CreateUser({
-        usersRepository: MockUsersRepository
+        UserRepository: MockUsersRepository
       });
-    });
-
-    it('emits ERROR with the error', (done) => {
-      const userData = { name: 'New User' };
-
-      createUser.on(createUser.outputs.ERROR, (response) => {
-        expect(response.message).to.equal('Some Error');
-        done();
-      });
-
-      createUser.execute(userData);
     });
   });
 });
