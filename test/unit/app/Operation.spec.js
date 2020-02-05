@@ -9,7 +9,7 @@ describe('App :: Operation', () => {
 
     };
 
-    CustomOperation.setOutputs(['SUCCESS']);
+    CustomOperation.setEvents(['SUCCESS']);
   });
 
   describe('#on', () => {
@@ -18,18 +18,17 @@ describe('App :: Operation', () => {
         const operation = new CustomOperation();
 
         expect(() => {
-          operation.on(operation.outputs.SUCCESS, () => {});
+          operation.on(operation.events.SUCCESS, () => {});
         }).to.not.throw;
       });
     });
 
     context('when added handler for a invalid output', () => {
-      it('does not throw', () => {
+      it('throws', () => {
         const operation = new CustomOperation();
-
         expect(() => {
           operation.on('INVALID', () => {});
-        }).to.throw(Error, /Invalid output "INVALID" to operation CustomOperation/);
+        }).to.throw('Invalid event "INVALID" to operation CustomOperation');
       });
     });
   });

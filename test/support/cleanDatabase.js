@@ -1,4 +1,10 @@
-const container = require('src/container');
-const database = container.resolve('database');
+// const container = require('src/container');
 
-module.exports = () => database && database.truncate({ cascade: true });
+
+// module.exports = async() => {
+//     try {
+//         container.resolve('database').then(() => {
+//             console.log("hello");
+//         });
+//     }
+//     };

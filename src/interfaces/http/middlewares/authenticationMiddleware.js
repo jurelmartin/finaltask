@@ -1,8 +1,7 @@
 const {authentication, paths} = require('ftauth');
 
-
 module.exports = (req, res, next) => {
-
+    
     const authHeader = req.get('Authorization');
     // gets the decoded token from verify function
     const decodedToken = authentication.verifyToken(authHeader, process.env.KEY);

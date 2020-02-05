@@ -6,5 +6,4 @@ const cleanDatabase = require('test/support/cleanDatabase');
 chai.use(dirtyChai);
 chai.use(chaiChange);
 
-// Comment this line if you're not using a database
-beforeEach(cleanDatabase);
+// beforeEach(cleanDatabase);
