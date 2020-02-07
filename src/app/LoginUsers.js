@@ -41,7 +41,7 @@ class LoginUsers extends Operation {
 
 
           this.email =  true;
-          this.password =  true;
+          this.password =  false;
           return this.emit(SUCCESS, token);
         }
       }

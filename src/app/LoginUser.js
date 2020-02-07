@@ -1,7 +1,7 @@
 const { Operation } = require('@amberjs/core');
 const User = require('src/domain/User');
 const { authentication } = require('ftauth');
-const { comparePassword } = require('../infra/encryption/hashPassword');
+const hashPassword  = require('../infra/encryption/hashPassword');
 
 
 
@@ -12,12 +12,13 @@ class LoginUser extends Operation {
   }
 
   async execute(data) {
-    const { SUCCESS, ERROR } = this.events;
+    const { SUCCESS, ERROR, VALIDATION_ERROR } = this.events;
 
-    const user = await new User(data).toJSON();
-
+    const user = new User(data);
+    // console.log(user);
     const email    = user.email;
     const password = user.password;
+
 
 
     try {
@@ -26,19 +27,21 @@ class LoginUser extends Operation {
       if(userData === undefined) {
          this.email = false;
  
-      }else {
+      }
+      else {
         const setUser =  userData.dataValues;
         const newUserPassword =  setUser.password;
 
-        
-        const checkPassword =  comparePassword(password, newUserPassword);
+        const checkPassword =  hashPassword.comparePassword(password, newUserPassword);
+
         if(!checkPassword) {
           this.password =  false;
 
         }else {
 
           const getUserId =  setUser.id;
-          const token =  authentication.generateToken(setUser.id, process.env.KEY, process.env.ACCESS_TOKEN_EXP);
+
+          const token =  authentication.generateToken(getUserId, process.env.KEY, process.env.ACCESS_TOKEN_EXP);
           token.userId =  getUserId;
 
 
@@ -59,7 +62,8 @@ class LoginUser extends Operation {
       }
 
     } catch(error) {
-       this.emit(ERROR, {
+
+       this.emit(VALIDATION_ERROR, {
         type: 'VALIDATION ERROR',
         details: error.message
       });

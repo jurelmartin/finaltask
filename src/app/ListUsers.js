@@ -14,8 +14,10 @@ class ListUsers extends Operation {
 
       this.emit(SUCCESS, users);
     } catch(error) {
-      this.emit(NOT_FOUND, error);
-    }
+        if(error.message === 'NotFoundError') {
+          return this.emit(NOT_FOUND, error);
+        }
+      }
   }
 }
 

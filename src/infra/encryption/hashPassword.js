@@ -1,15 +1,18 @@
 const bcrypt = require('bcrypt');
 
-const hashPassword = (password) => {
+exports.hashPassword = (password) => {
   const salt = bcrypt.genSaltSync();
   return bcrypt.hashSync(password, salt);
 };
 
-const comparePassword = (password, encodedPassword) => {
-  return bcrypt.compareSync(password, encodedPassword);
+exports.comparePassword = (password, encodedPassword) => {
+  try {
+    result = bcrypt.compareSync(password, encodedPassword);   
+    return result;
+  } catch (err) {
+    return false;
+  }
+
 };
 
-module.exports = {
-  hashPassword,
-  comparePassword
-};
+

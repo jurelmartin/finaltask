@@ -26,7 +26,7 @@ class UsersController {
   
   login(req, res) {
     const { operation } = req;
-    const { SUCCESS, ERROR, NOT_FOUND } = operation.events;
+    const { SUCCESS, VALIDATION_ERROR, NOT_FOUND } = operation.events;
 
     operation
       .on(SUCCESS, (result) => {
@@ -34,7 +34,7 @@ class UsersController {
           .status(Status.OK)
           .json({ status: Status.OK, details: { message: 'Logged in successfully!', result: result} }).end();
       })
-      .on(ERROR,  (result) => {
+      .on(VALIDATION_ERROR,  (result) => {
         res
           .status(Status.UNAUTHORIZED)
           .json({
@@ -62,7 +62,7 @@ class UsersController {
       .on(SUCCESS, (result) => {
         res
           .status(Status.OK)
-          .json({ status: Status.OK, details: { message: 'List of Users', result: result } });
+          .json({ status: Status.OK, details: { message: 'List of Users', token: result } });
       })
       .on(NOT_FOUND, (error) => {
         res.status(Status.NOT_FOUND).json({
@@ -127,7 +127,7 @@ class UsersController {
       .on(SUCCESS, (result) => {
         res
           .status(Status.CREATED)
-          .json({ status: Status.CREATED, details: { message: 'User Created!', userId: result } });
+          .json({ status: Status.CREATED, details: { message: 'User Created!', userId: result.id } });
       })
       .on(VALIDATION_ERROR, (error) => {
         res.status(Status.BAD_REQUEST).json({

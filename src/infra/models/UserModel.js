@@ -9,29 +9,36 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4
+        defaultValue: DataTypes.UUIDV4,
+        allowNull: false
       }, 
       email : {
         type: DataTypes.STRING,
         unique: {
           args: true,
           msg: 'E-mail already exist'
-        }
+        },
+        allowNull: false
       },
       password : {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: false
       },
       role: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: false
       },
       firstName : {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: false
       },
       lastName : {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: false
       },
       middleName : {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: false
       },
     }, {
       hooks: {

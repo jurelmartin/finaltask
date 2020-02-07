@@ -2,6 +2,7 @@ const { expect } = require('chai');
 const DeleteUser = require('src/app/DeleteUser');
 
 describe('App :: User :: DeleteUser', () => {
+  
   var deleteUser;
 
   context('when user exists', () => {
@@ -11,12 +12,12 @@ describe('App :: User :: DeleteUser', () => {
       };
 
       deleteUser = new DeleteUser({
-        usersRepository: MockUsersRepository
+        UserRepository: MockUsersRepository
       });
     });
 
     it('deletes the user and emits SUCCESS with no payload', (done) => {
-      deleteUser.on(deleteUser.outputs.SUCCESS, (response) => {
+      deleteUser.on(deleteUser.events.SUCCESS, (response) => {
         expect(response).to.be.undefined();
         done();
       });
@@ -32,13 +33,13 @@ describe('App :: User :: DeleteUser', () => {
       };
 
       deleteUser = new DeleteUser({
-        usersRepository: MockUsersRepository
+        UserRepository: MockUsersRepository
       });
     });
 
     it('emits NOT_FOUND with the error', (done) => {
-      deleteUser.on(deleteUser.outputs.NOT_FOUND, (response) => {
-        expect(response.message).to.equal('NotFoundError');
+      deleteUser.on(deleteUser.events.NOT_FOUND, (error) => {
+        expect(error.message).to.equal('NotFoundError');
         done();
       });
 
@@ -54,12 +55,12 @@ describe('App :: User :: DeleteUser', () => {
       };
 
       deleteUser = new DeleteUser({
-        usersRepository: MockUsersRepository
+        UserRepository: MockUsersRepository
       });
     });
 
     it('emits ERROR with the error', (done) => {
-      deleteUser.on(deleteUser.outputs.ERROR, (response) => {
+      deleteUser.on(deleteUser.events.ERROR, (response) => {
         expect(response.message).to.equal('Some Error');
         done();
       });

@@ -13,20 +13,24 @@ describe('App :: User :: CreateUser', () => {
       createUser = new CreateUser({
         UserRepository: MockUsersRepository
       });
+
     });
 
-    it('creates the user and emits SUCCESS', (done) => {
-      const userData = {       
-      email: "etanwislao@stratpoint.com",
-      password: "123456" };
+    it('creates the user and emits SUCCESS',  (done) => {
+      const data = {       
+      email: "jagustin@stratpoint.com",
+      password: "123456"
+    };
 
-      createUser.on(createUser.events.SUCCESS, (response) => {
-        expect(response.email).to.equal(userData.email);
-        done();
+      createUser.on(createUser.events.SUCCESS,  (response) => {
+        expect(response.email).to.equal(data.email);
+        done();      
       });
-
-      createUser.execute(userData);
+      
+      createUser.execute(data);
+      
     });
+    
   });
 
   context('when user is invalid', () => {
@@ -43,7 +47,7 @@ describe('App :: User :: CreateUser', () => {
     it('emits VALIDATION_ERROR with the error', (done) => {
       const userData = {       
         email: "etanwislao@stratpoint.com",
-        password: "12345" };
+        password: "1" };
 
       createUser.on(createUser.events.VALIDATION_ERROR, (response) => {
         expect(response.type).to.equal('VALIDATION ERROR');

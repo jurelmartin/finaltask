@@ -25,7 +25,7 @@ class UpdateUser extends Operation {
         throw error;  
       }
       
-      console.log(id.toString());
+      
       const updatedUser = await this.UserRepository.update(id, data);
       
       this.emit(SUCCESS, updatedUser);
