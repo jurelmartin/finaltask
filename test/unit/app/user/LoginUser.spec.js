@@ -34,10 +34,10 @@ describe('App :: User :: LoginUser', () => {
         password: '111111'
       };
 
-      sinon.stub(hashPassword, 'comparePassword')
+      sinon.stub(hashPassword, 'comparePassword');
       hashPassword.comparePassword.returns(this.pasword = true);
 
-      sinon.stub(authentication, 'generateToken')
+      sinon.stub(authentication, 'generateToken');
       authentication.generateToken.returns({
         token: 'zyx',
         userId: 1
