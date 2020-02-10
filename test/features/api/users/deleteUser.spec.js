@@ -1,31 +1,25 @@
-// const request = require('test/support/request');
-// const factory = require('test/support/factory');
+// const chai = require('chai');
+// const chaiHttp = require('chai-http');
 // const { expect } = require('chai');
+// const { generateToken } = require('test/support/tokenFactory');
+// const { generateUser } = require('test/support/newUserFactory')
 
-// describe('API :: DELETE /api/users/:id', () => {
-//   context('when user exists', () => {
-//     it('deletes the user and return status 202', async () => {
-//       const user = await factory.create('user', {
-//         name: 'User'
+// chai.use(chaiHttp);
+// describe('API :: GET /api/users:id', () => {
+//   before(async() => {
+//     console.log(await generateUser());
+//   });
+//   it('delete user', async () => {
+//     chai.request('localhost:' + process.env.PORT)
+//       .delete('/api/users')
+//       .set('Authorization', 'bearer ' + generateToken())
+//       .send({
+//         email : 'jec@stratpoint.com',
+//         password: '111111'
+//       })
+//       .end((err, res) => {
+//         expect(res).to.have.status(200);                            
 //       });
-
-//       await request()
-//         .delete(`/api/users/${user.id}`)
-//         .expect(202);
-//     });
-//   });
-
-//   context('when user does not exist', () => {
-//     it('returns the not found message and status 404', async () => {
-//       const { body } = await request()
-//         .delete('/api/users/0')
-//         .send({
-//           name: 'Updated User'
-//         })
-//         .expect(404);
-
-//       expect(body.type).to.equal('NotFoundError');
-//       expect(body.details).to.equal('User with id 0 can\'t be found.');
-//     });
-//   });
+//   });   
 // });
+    
