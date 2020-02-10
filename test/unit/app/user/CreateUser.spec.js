@@ -18,8 +18,8 @@ describe('App :: User :: CreateUser', () => {
 
     it('creates the user and emits SUCCESS',  (done) => {
       const data = {       
-        email: "jagustin@stratpoint.com",
-        password: "123456"
+        email: 'jagustin@stratpoint.com',
+        password: '123456'
       };
 
       createUser.on(createUser.events.SUCCESS,  (response) => {
@@ -46,8 +46,9 @@ describe('App :: User :: CreateUser', () => {
 
     it('emits VALIDATION_ERROR with the error', (done) => {
       const userData = {       
-        email: "etanwislao@stratpoint.com",
-        password: "1" };
+        email: 'etanwislao@stratpoint.com',
+        password: '1' 
+      };
 
       createUser.on(createUser.events.VALIDATION_ERROR, (response) => {
         expect(response.type).to.equal('VALIDATION ERROR');
