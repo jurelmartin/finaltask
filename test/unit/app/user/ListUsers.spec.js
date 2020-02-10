@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const ListUsers = require('src/app/ListUsers');
 
 describe('App :: User :: ListUsers', () => {
-  var getAllUsers;
+  var listUsers;
 
   context('when query is successful', () => {
     before(() => {

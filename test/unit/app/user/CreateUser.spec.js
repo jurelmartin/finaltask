@@ -18,9 +18,9 @@ describe('App :: User :: CreateUser', () => {
 
     it('creates the user and emits SUCCESS',  (done) => {
       const data = {       
-      email: "jagustin@stratpoint.com",
-      password: "123456"
-    };
+        email: "jagustin@stratpoint.com",
+        password: "123456"
+      };
 
       createUser.on(createUser.events.SUCCESS,  (response) => {
         expect(response.email).to.equal(data.email);
