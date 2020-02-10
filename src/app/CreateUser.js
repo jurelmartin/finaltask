@@ -9,7 +9,7 @@ class CreateUser extends Operation {
   }
 
   async execute(data) {
-    const { SUCCESS,ERROR, VALIDATION_ERROR } = this.events;
+    const { SUCCESS, ERROR, VALIDATION_ERROR } = this.events;
     
     try {
       const user = new User(data);

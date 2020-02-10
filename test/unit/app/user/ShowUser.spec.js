@@ -1,10 +1,8 @@
 const { expect } = require('chai');
 const ShowUser = require('src/app/ShowUser');
-const { authorization } = require('ftauth');
 
 
 describe('App :: User :: ShowUser', () => {
-  // this.enableTimeouts(false);
   let showUser;
 
   context('when user exists', () => {

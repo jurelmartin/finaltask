@@ -12,7 +12,7 @@ class LoginUser extends Operation {
   }
 
   async execute(data) {
-    const { SUCCESS, ERROR, VALIDATION_ERROR } = this.events;
+    const { SUCCESS, VALIDATION_ERROR } = this.events;
 
     const user = new User(data);
     // console.log(user);
@@ -25,7 +25,7 @@ class LoginUser extends Operation {
       const userData = (await this.UserRepository.getAll({ where: { email } }))[0];
 
       if(userData === undefined) {
-         this.email = false;
+        this.email = false;
  
       }
       else {
@@ -51,7 +51,7 @@ class LoginUser extends Operation {
         }
       }
            
-      const newUser =  {email: this.email, password: this.password};
+      const newUser =  {email: this.email, password: this.password};  
       const user =  await new User(newUser);
       const result =  user.isAuth();
 
@@ -62,8 +62,7 @@ class LoginUser extends Operation {
       }
 
     } catch(error) {
-
-       this.emit(VALIDATION_ERROR, {
+      this.emit(VALIDATION_ERROR, {
         type: 'VALIDATION ERROR',
         details: error.message
       });
