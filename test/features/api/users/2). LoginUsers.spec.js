@@ -19,7 +19,6 @@ describe('API :: POST /api/login', () => {
       let res = await request('localhost:' + process.env.PORT).post('/api/login')
         .send(getUserCredentials());
       const obj = JSON.parse(res.text);
-      console.log(obj);
       setToken(obj.details.result.token);
       setUserId(obj.details.result.userId);
       expect(obj.details.result).to.have.property('token');
