@@ -14,7 +14,7 @@ var mochaAsync = (fn) => {
 
 // chai.use(chaiHttp);
 
-beforeEach(() => {
+before(() => {
   app;
 });
 describe('API :: POST /api/login', () => {

@@ -1,26 +1,42 @@
-// const request = require('test/support/request');
-// const factory = require('test/support/factory');
-// const { expect } = require('chai');
+const app = require('test/support/test-app');
+const request = require('supertest');
+const { expect } = require('chai');
 
-// describe('API :: PUT /api/users/:id', () => {
-//   context('when user exists', () => {
-//     context('when sent data is ok', () => {
-//       it('updates and returns 202 with the updated user', async () => {
-//         const user = await factory.create('user', {
-//           name: 'User'
-//         });
+var mochaAsync = (fn) => {
+  return done => {
+    fn.call().then(done, err => {
+      done(err);
+    });
+  };
+};
 
-//         const { body } = await request()
-//           .put(`/api/users/${user.id}`)
-//           .send({
-//             name: 'Updated User'
-//           })
-//           .expect(202);
 
-//         expect(body.id).to.equal(user.id);
-//         expect(body.name).to.equal('Updated User');
-//       });
-//     });
+before(() => {
+  app;
+});
+
+
+describe('API :: PUT /api/users/:id', () => {
+  context('when user exists', () => {
+    context('when sent data is ok', () => {
+      it('updates and returns 202 with the updated user', mochaAsync(async() => {
+        const user = {
+          id: 'fc879fc7-052f-4f63-8f26-b5881d5adb60'
+        };
+        let res = await request('localhost:' + process.env.PORT).put(`/api/users/${user.id}`)
+          .send({
+            name: 'Updated User'
+          })
+        expect(202);
+        console.log(res);
+        // const { body } = await request()
+
+      }));
+    // expect(body.id).to.equal(user.id);
+    // expect(body.name).to.equal('Updated User');
+    });
+  });
+});
 
 //     context('when name is empty', () => {
 //       it('does update and returns 400 with the validation error', async () => {
