@@ -19,6 +19,7 @@ describe('API :: POST /api/users', () => {
         .send(data);
 
       expect(res.status).to.equal(201);       
+      console.log(res); 
       setUserCredentials({
         email: data.email,
         password: data.password
