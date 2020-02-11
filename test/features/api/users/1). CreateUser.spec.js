@@ -1,3 +1,4 @@
+const app = require('test/support/test-app');
 const request = require('supertest');
 const { expect } = require('chai');
 const mochaAsync = require('test/support/mochaAsync');
@@ -19,7 +20,6 @@ describe('API :: POST /api/users', () => {
         .send(data);
 
       expect(res.status).to.equal(201);       
-      console.log(res); 
       setUserCredentials({
         email: data.email,
         password: data.password

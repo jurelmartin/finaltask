@@ -17,10 +17,7 @@ describe('API :: POST /api/login', () => {
     }));
     it('returns token with userId', mochaAsync(async () => {
       let res = await request('localhost:' + process.env.PORT).post('/api/login')
-        .send({
-          email : 'jec@stratpoint.com',
-          password: '111111'
-        });
+        .send(getUserCredentials());
       const obj = JSON.parse(res.text);
       setToken(obj.details.result.token);
       setUserId(obj.details.result.userId);
