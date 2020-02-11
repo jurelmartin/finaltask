@@ -1,34 +1,19 @@
-const app = require('test/support/test-app');
 const request = require('supertest');
 const { expect } = require('chai');
 const { getToken } = require('test/support/tokenFactory');
 const mochaAsync = require('test/support/mochaAsync');
-
-
-before(() => {
-  app;
-});
-
+const { getUserId } = require('test/support/userHelper');
 
 describe('API :: PUT /api/users/:id', () => {
   context('when user exists', () => {
     context('when sent data is valid', () => {
       it('updates and returns 202 with the updated user', mochaAsync(async() => {
-        const user = {
-          id: 'fc879fc7-052f-4f63-8f26-b5881d5adb60',
-          email: 'jagustin@stratpoint.com',
-          password: '111111',
-          firstName: 'jorelle',
-          lastName: 'agustin',
-          middleName: 'dela pena'
-        };
-        let res = await request('localhost:' + process.env.PORT).put(`/api/users/${user.id}`)
+        let res = await request('localhost:' + process.env.PORT).put(`/api/users/${getUserId()}`)
           .set('Authorization', 'bearer ' + getToken())
           .send({
             firstName: 'newFirst',
             lastName: 'newLast'
           });
-        
         const obj = JSON.parse(res.text);
         expect(obj.status).to.equal(202);
         expect(obj.details.result).to.be.an('array');
@@ -37,16 +22,8 @@ describe('API :: PUT /api/users/:id', () => {
     });
 
     context('when sent data is invalid', () => {
-      const user = {
-        id: 'fc879fc7-052f-4f63-8f26-b5881d5adb60',
-        email: 'jagustin@stratpoint.com',
-        password: '111111',
-        firstName: 'jorelle',
-        lastName: 'agustin',
-        middleName: 'dela pena'
-      };
       it('returns 400 with validation error', mochaAsync(async () => {
-        let res = await request('localhost:' + process.env.PORT).put(`/api/users/${user.id}`)
+        let res = await request('localhost:' + process.env.PORT).put(`/api/users/${getUserId()}`)
           .set('Authorization', 'bearer ' + getToken())
           .send({
             email: 'm',

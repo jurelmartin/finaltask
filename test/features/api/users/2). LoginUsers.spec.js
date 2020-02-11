@@ -1,4 +1,3 @@
-const app = require('test/support/test-app');
 const { setToken } = require('test/support/tokenFactory');
 const { setUserId } = require('test/support/userHelper');
 const request = require('supertest');
@@ -7,10 +6,6 @@ const { getUserCredentials } = require ('test/support/userHelper');
 const mochaAsync = require('test/support/mochaAsync');
 
 
-
-before(() => {
-  app;
-});
 describe('API :: POST /api/login', () => {
 
   context('when credentials are valid', () => {
