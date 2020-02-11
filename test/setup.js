@@ -5,5 +5,3 @@ const chaiChange = require('chai-change');
 
 chai.use(dirtyChai);
 chai.use(chaiChange);
-
-// beforeEach(cleanDatabase);

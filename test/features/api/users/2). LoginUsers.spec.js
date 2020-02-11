@@ -1,7 +1,9 @@
 const app = require('test/support/test-app');
 const { setToken } = require('test/support/tokenFactory');
+const { setUserId } = require('test/support/userHelper');
 const request = require('supertest');
 const { expect } = require('chai');
+const { getUserCredentials } = require ('test/support/userHelper');
 
 var mochaAsync = (fn) => {
   return done => {
@@ -20,10 +22,7 @@ describe('API :: POST /api/login', () => {
     it('returns 200', mochaAsync(async () => { 
       let res = await request('localhost:' + process.env.PORT)
         .post('/api/login')
-        .send({
-          email : 'jec@stratpoint.com',
-          password: '111111'
-        });
+        .send(getUserCredentials());
       expect(res.status).to.equal(200);
     }));
     it('returns token with userId', mochaAsync(async () => {
@@ -34,6 +33,7 @@ describe('API :: POST /api/login', () => {
         });
       const obj = JSON.parse(res.text);
       setToken(obj.details.result.token);
+      setUserId(obj.details.result.userId);
       expect(obj.details.result).to.have.property('token');
       expect(obj.details.result).to.have.property('userId');   
     }));
