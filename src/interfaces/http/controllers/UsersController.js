@@ -14,7 +14,7 @@ class UsersController {
     };
     const router = Router();
 
-    router.post('/login', this.injector('LoginUser'), this.login)
+    router.post('/login', this.injector('LoginUser'), this.login);
     router.get('/users', this.injector('ListUsers'), this.index);
     router.post('/users', this.injector('CreateUser'), this.create);
     router.get('/users/:id', this.injector('ShowUser'), this.show);
@@ -73,15 +73,15 @@ class UsersController {
       })
       .on(ERROR, next);
     
-      if(req.role.toLowerCase() !== 'admin'){
-        return res
-            .status(403)
-            .json({
-              status: 403,
-              type: "AUTHORIZATION ERROR",
-              details: 'Not Authorized'
-            });
-      }
+    if(req.role.toLowerCase() !== 'admin'){
+      return res
+        .status(403)
+        .json({
+          status: 403,
+          type: "AUTHORIZATION ERROR",
+          details: 'Not Authorized'
+        });
+    }
 
     operation.execute();
   }
