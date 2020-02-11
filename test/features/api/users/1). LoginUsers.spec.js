@@ -28,18 +28,20 @@ describe('API :: POST /api/login', () => {
         });
       expect(res.status).to.equal(200);
     }));
+    it('returns token with userId', mochaAsync(async () => {
+      let res = await request('localhost:' + process.env.PORT).post('/api/login')
+        .send({
+          email : 'jagustin@stratpoint.com',
+          password: '111111'
+        });
+      const obj = JSON.parse(res.text);
+      // console.log(obj.details.result);
+      expect(obj.details.result).to.have.property('token');
+      expect(obj.details.result).to.have.property('userId');   
+    }));
+
   });
-  it('returns token with userId', mochaAsync(async () => {
-    let res = await request('localhost:' + process.env.PORT).post('/api/login')
-      .send({
-        email : 'jagustin@stratpoint.com',
-        password: '111111'
-      });
-    const obj = JSON.parse(res.text);
-    // console.log(obj.details.result);
-    expect(obj.details.result).to.have.property('token');
-    expect(obj.details.result).to.have.property('userId');   
-  }));
+
   context('when credentials are invalid', () => {
     it('returns 401', mochaAsync(async () => {
       let res = await request('localhost:' + process.env.PORT).post('/api/login')
