@@ -26,7 +26,7 @@ class UsersController {
   
   login(req, res) {
     const { operation } = req;
-    const { SUCCESS, VALIDATION_ERROR, NOT_FOUND } = operation.events;
+    const { SUCCESS, VALIDATION_ERROR } = operation.events;
 
     operation
       .on(SUCCESS, (result) => {
@@ -42,7 +42,7 @@ class UsersController {
             type: result.type,
             details: result.details
           }).end();
-      })
+      });
 
 
 
@@ -78,7 +78,7 @@ class UsersController {
         .status(403)
         .json({
           status: 403,
-          type: "AUTHORIZATION ERROR",
+          type: 'AUTHORIZATION ERROR',
           details: 'Not Authorized'
         });
     }
@@ -106,15 +106,15 @@ class UsersController {
       })
       .on(ERROR, next);
 
-      if(req.role.toLowerCase() !== 'admin'){
-        return res
-            .status(403)
-            .json({
-              status: 403,
-              type: "AUTHORIZATION ERROR",
-              details: 'Not Authorized'
-            });
-      }
+    if(req.role.toLowerCase() !== 'admin'){
+      return res
+        .status(403)
+        .json({
+          status: 403,
+          type: 'AUTHORIZATION ERROR',
+          details: 'Not Authorized'
+        });
+    }
 
     operation.execute((req.params.id));
   }
@@ -153,6 +153,7 @@ class UsersController {
       })
       .on(VALIDATION_ERROR, (error) => {
         res.status(Status.BAD_REQUEST).json({
+          status: Status.BAD_REQUEST,
           type: 'ValidationError',
           details: error.details
         });
@@ -166,17 +167,17 @@ class UsersController {
       })
       .on(ERROR, next);
 
-      if(req.role.toLowerCase() !== 'admin'){
-        if(req.params.id !== req.userId){
-          return res
-              .status(403)
-              .json({
-                status: 403,
-                type: "AUTHORIZATION ERROR",
-                details: 'Not Authorized'
-              });
-        }
+    if(req.role.toLowerCase() !== 'admin'){
+      if(req.params.id !== req.userId){
+        return res
+          .status(403)
+          .json({
+            status: 403,
+            type: 'AUTHORIZATION ERROR',
+            details: 'Not Authorized'
+          });
       }
+    }
     authorization.setCurrentRole(req.role);
     operation.execute((req.params.id), req.body);
   }
@@ -200,15 +201,15 @@ class UsersController {
       })
       .on(ERROR, next);
 
-      if(req.role.toLowerCase() !== 'admin'){
-        return res
-            .status(403)
-            .json({
-              status: 403,
-              type: "AUTHORIZATION ERROR",
-              details: 'Not Authorized'
-            });
-      }
+    if(req.role.toLowerCase() !== 'admin'){
+      return res
+        .status(403)
+        .json({
+          status: 403,
+          type: 'AUTHORIZATION ERROR',
+          details: 'Not Authorized'
+        });
+    }
 
     operation.execute(req.params.id);
   }

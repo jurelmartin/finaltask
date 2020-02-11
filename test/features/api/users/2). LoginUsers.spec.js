@@ -4,17 +4,12 @@ const { setUserId } = require('test/support/userHelper');
 const request = require('supertest');
 const { expect } = require('chai');
 const { getUserCredentials } = require ('test/support/userHelper');
+const mochaAsync = require('test/support/mochaAsync');
 
-var mochaAsync = (fn) => {
-  return done => {
-    fn.call().then(done, err => {
-      done(err);
-    });
-  };
-};
+
 
 before(() => {
-  app();
+  app;
 });
 describe('API :: POST /api/login', () => {
 
