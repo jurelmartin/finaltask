@@ -1,4 +1,3 @@
-const app = require('test/support/test-app');
 const request = require('supertest');
 const { expect } = require('chai');
 const mochaAsync = require('test/support/mochaAsync');
