@@ -1,5 +1,9 @@
-const { authentication } = require('ftauth');
+let userToken;
 
-exports.generateToken = () => {
-  return authentication.generateToken( 'dc49eb12-2546-44e8-b6cc-4a7773245585', 'supersecretkey', '1h').token;
+exports.setToken = (token) => {
+  return userToken = token;
+};
+
+exports.getToken = () => {
+  return userToken;
 };
