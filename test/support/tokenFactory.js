@@ -1,9 +1,17 @@
-let userToken;
+let userToken, adminToken;
 
-exports.setToken = (token) => {
+exports.setAdminToken = (token) => {
+  return adminToken = token;
+};
+
+exports.getAdminToken = () => {
+  return adminToken;
+};
+
+exports.setUserToken = (token) => {
   return userToken = token;
 };
 
-exports.getToken = () => {
+exports.getUserToken = () => {
   return userToken;
 };

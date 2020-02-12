@@ -1,12 +1,19 @@
-const app = require('test/support/test-app');
 const request = require('supertest');
 const { expect } = require('chai');
 const mochaAsync = require('test/support/mochaAsync');
-const { setUserCredentials } = require ('test/support/userHelper');
+const { setUserCredentials, setAdminCredentials } = require ('test/support/userHelper');
 
 describe('API :: POST /api/users', () => {
   context('when inputs are valid', () => {  
-    const data = {
+    const adminData = {
+      email: 'test'+Math.random()+'@stratpoint.com',
+      password: '111111',
+      firstName: 'jerico',
+      lastName: 'Estanislao',
+      middleName: 'Esquibel',
+      role: 'admin'
+    };
+    const userData = {
       email: 'test'+Math.random()+'@stratpoint.com',
       password: '111111',
       firstName: 'jerico',
@@ -15,21 +22,30 @@ describe('API :: POST /api/users', () => {
       role: 'admin'
     };
     it('returns 200', mochaAsync(async () => {
-      let res = await request('localhost:' + process.env.PORT)
+      let res = await request('localhost:3001')
         .post('/api/users')
-        .send(data);
+        .send(adminData);
+
+      expect(res.status).to.equal(201);       
+      setAdminCredentials({
+        email: adminData.email,
+        password: adminData.password
+      });   
+      res = await request('localhost:3001')
+        .post('/api/users')
+        .send(userData);
 
       expect(res.status).to.equal(201);       
       setUserCredentials({
-        email: data.email,
-        password: data.password
-      });                 
+        email: userData.email,
+        password: userData.password
+      });              
     })
     );
   });
   context('when inputs are invalid', () => {  
     it('returns 401', mochaAsync(async () => {
-      let res = await request('localhost:' + process.env.PORT)
+      let res = await request('localhost:3001')
         .post('/api/users')
         .send({
           email: 'test'+Math.random()+'@stratpoint.com',

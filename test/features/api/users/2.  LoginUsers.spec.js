@@ -1,30 +1,27 @@
-const { setToken } = require('test/support/tokenFactory');
+const { setUserToken, setAdminToken } = require('test/support/tokenFactory');
 const { setUserId } = require('test/support/userHelper');
 const request = require('supertest');
 const { expect } = require('chai');
-const { getUserCredentials } = require ('test/support/userHelper');
+const { getUserCredentials, getAdminCredentials } = require ('test/support/userHelper');
 const mochaAsync = require('test/support/mochaAsync');
-const { generateUser } = require('test/support/userFactory');
 
 
 describe('API :: POST /api/login', () => {
 
-  before(() => {
-    mochaAsync(generateUser('user'));
-  });
-
   context('when credentials are valid', () => {
     it('returns 200', mochaAsync(async () => { 
-      let res = await request('localhost:' + process.env.PORT)
+      let res = await request('localhost:3001')
         .post('/api/login')
-        .send(getUserCredentials().credentials);
+        .send(getAdminCredentials());
       expect(res.status).to.equal(200);
+      const obj = JSON.parse(res.text);
+      setAdminToken(obj.details.result.token);
     }));
     it('returns token with userId', mochaAsync(async () => {
-      let res = await request('localhost:' + process.env.PORT).post('/api/login')
-        .send(getUserCredentials().credentials);
+      let res = await request('localhost:3001').post('/api/login')
+        .send(getUserCredentials());
       const obj = JSON.parse(res.text);
-      setToken(obj.details.result.token);
+      setUserToken(obj.details.result.token);
       setUserId(obj.details.result.userId);
       expect(obj.details.result).to.have.property('token');
       expect(obj.details.result).to.have.property('userId');   
@@ -34,7 +31,7 @@ describe('API :: POST /api/login', () => {
 
   context('when credentials are invalid', () => {
     it('returns 401', mochaAsync(async () => {
-      let res = await request('localhost:' + process.env.PORT).post('/api/login')
+      let res = await request('localhost:3001').post('/api/login')
         .send({
           email: 'jagustin@stratpoint.com',
           password: '1'
