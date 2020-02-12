@@ -16,7 +16,7 @@ module.exports = {
   /**
    * port if funs on server
    */
-  port: process.env.PORT,
+  port: 3001,
   /**
    * Boolean config to enable serverless
    */
