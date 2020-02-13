@@ -1,32 +1,62 @@
 const request = require('supertest');
 const { expect } = require('chai');
 const { getUserId } = require('test/support/userHelper');
-const { getAdminToken } = require('test/support/tokenFactory');
+const { getAdminToken, getUserToken } = require('test/support/tokenFactory');
 const mochaAsync = require('test/support/mochaAsync');
 
 describe('API :: GET /api/users/:id', () => {
-  context('when credentials are invalid', () => {  
-    it('returns 401 when user is not authenticated', mochaAsync(async () => {
-      let res = await request('localhost:3001').get(`/api/users/${getUserId()}`);
-      expect(res.status).to.equal(401);                            
-    })
-    );
-  });
-  context('when credentials are valid', () => {  
-    it('returns user data when user exist', mochaAsync(async () => {
-      let res = await request('localhost:3001')
+
+  context('when user is authenticated', () => {  
+    context('when user role is "user"', () => {
+      context('user is UNAUTHORIZED', () => {
+        it('returns 403 with the message', mochaAsync(async()=> {
+          let res = await request('localhost:3000')
+            .get(`/api/users/${getUserId()}`)
+            .set('Authorization', 'bearer ' + getUserToken())
+            .expect(403);
+
+          const obj = JSON.parse(res.text); 
+          expect(obj.details).to.be.equal('Not Authorized');             
+        }));
+      });
+    });
+    context('when user role is "admin"', () => {
+      context('user is AUTHORIZED', () => {
+        context('when user exists', () => {
+          it('returns 200 with the user data', mochaAsync(async () => {
+            let res = await request('localhost:3000')
+              .get(`/api/users/${getUserId()}`)
+              .set('Authorization', 'bearer ' + getAdminToken())
+              .expect(200);
+      
+            const obj = JSON.parse(res.text);      
+            expect(obj.details.message).to.not.be.empty();                        
+          }));
+        });
+        context('when user does not exists', () => {
+          it('returns 404 with the NotFound error', mochaAsync(async () => {
+            let res = await request('localhost:3000')
+              .get('/api/users/1')
+              .set('Authorization', 'bearer ' + getAdminToken())
+              .expect(404);
+
+            const obj = JSON.parse(res.text);      
+            expect(obj.details).to.be.equal('User does not exists!');                          
+          }));
+        });
+      });
+    });
+  }); 
+
+  context('when user is not authenticated', () => {  
+    it('returns 401 with the message', mochaAsync(async () => {
+      let res = await request('localhost:3000')
         .get(`/api/users/${getUserId()}`)
-        .set('Authorization', 'bearer ' + getAdminToken());
-      expect(res.status).to.equal(200);                            
-    })
-    );
-    // it('returns 404 when user is not found', mochaAsync(async () => {
-    //   let res = await request('localhost:3001')
-    //     .get(`/api/users/dummyid`)
-    //     .set('Authorization', 'bearer ' + getAdminToken());
-    //   expect(res.status).to.equal(404);                            
-    // })
-    // );
-  });    
+        .expect(401);
+
+      const obj = JSON.parse(res.text);     
+      expect(obj.message).to.equal('Not Authenticated');                            
+    }));
+  });
 });
     

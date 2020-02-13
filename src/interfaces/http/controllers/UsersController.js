@@ -62,7 +62,7 @@ class UsersController {
       .on(SUCCESS, (result) => {
         res
           .status(Status.OK)
-          .json({ status: Status.OK, details: { message: 'List of Users', token: result } });
+          .json({ status: Status.OK, details: { message: 'List of Users', result: result } });
       })
       .on(NOT_FOUND, (error) => {
         res.status(Status.NOT_FOUND).json({
@@ -75,9 +75,9 @@ class UsersController {
     
     if(req.role.toLowerCase() !== 'admin'){
       return res
-        .status(403)
+        .status(Status.FORBIDDEN)
         .json({
-          status: 403,
+          status: Status.FORBIDDEN,
           type: 'AUTHORIZATION ERROR',
           details: 'Not Authorized'
         });
@@ -95,22 +95,22 @@ class UsersController {
       .on(SUCCESS, (result) => {
         res
           .status(Status.OK)
-          .json({ status: Status.OK, details: { message: 'List of User', result: result } });
+          .json({ status: Status.OK, details: { message: 'User data', result: result } });
       })
-      .on(NOT_FOUND, (error) => {
+      .on(NOT_FOUND, () => {
         res.status(Status.NOT_FOUND).json({
           status: Status.NOT_FOUND,
           type: 'NotFoundError',
-          details: error.details
+          details: 'User does not exists!'
         });
       })
       .on(ERROR, next);
 
     if(req.role.toLowerCase() !== 'admin'){
       return res
-        .status(403)
+        .status(Status.FORBIDDEN)
         .json({
-          status: 403,
+          status: Status.FORBIDDEN,
           type: 'AUTHORIZATION ERROR',
           details: 'Not Authorized'
         });
@@ -170,9 +170,9 @@ class UsersController {
     if(req.role.toLowerCase() !== 'admin'){
       if(req.params.id !== req.userId){
         return res
-          .status(403)
+          .status(Status.FORBIDDEN)
           .json({
-            status: 403,
+            status: Status.FORBIDDEN,
             type: 'AUTHORIZATION ERROR',
             details: 'Not Authorized'
           });
@@ -192,20 +192,20 @@ class UsersController {
           .status(Status.OK)
           .json({status: Status.OK, details: { message: 'Successfully deleted!' }}).end();
       })
-      .on(NOT_FOUND, (error) => {
+      .on(NOT_FOUND, () => {
         res.status(Status.NOT_FOUND).json({
           status: Status.NOT_FOUND,
           type: 'NotFoundError',
-          details: error.details
+          details: 'User does not exists!'
         });
       })
       .on(ERROR, next);
 
     if(req.role.toLowerCase() !== 'admin'){
       return res
-        .status(403)
+        .status(Status.FORBIDDEN)
         .json({
-          status: 403,
+          status: Status.FORBIDDEN,
           type: 'AUTHORIZATION ERROR',
           details: 'Not Authorized'
         });
