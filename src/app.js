@@ -6,7 +6,6 @@ brew(config, (err, brewed) => {
   if (err) throw err;
   const app = brewed.getServer();
   app.start().then(() => {
-    console.log('hello');
   }).catch(error => {
     app.logger.error(error.stack);
     process.exit();
