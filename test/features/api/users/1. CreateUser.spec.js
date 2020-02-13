@@ -19,7 +19,7 @@ describe('API :: POST /api/users', () => {
       firstName: 'jerico',
       lastName: 'Estanislao',
       middleName: 'Esquibel',
-      role: 'admin'
+      role: 'user'
     };
     it('returns 200', mochaAsync(async () => {
       let res = await request('localhost:3001')
