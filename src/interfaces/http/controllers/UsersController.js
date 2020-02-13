@@ -1,8 +1,5 @@
-
 const { Router } = require('express');
 const Status = require('http-status');
-
-// const { BaseController } = require('@amberjs/core');
 
 
 class UsersController {
