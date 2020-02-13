@@ -41,7 +41,7 @@ class LoginUser extends Operation {
 
           const getUserId =  setUser.id;
 
-          const token =  authentication.generateToken(getUserId, 'supersecretkey', '1h');
+          const token =  authentication.generateToken(getUserId, process.env.ACCESS_TOKEN_KEY, process.env.ACCESS_TOKEN_EXP);
           token.userId =  getUserId;
 
 
