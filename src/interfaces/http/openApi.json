@@ -22,7 +22,7 @@
               },
               "examples" : {
                 "0" : {
-                  "value" : "{\n\t\"email\": \"jagustin@stratpoint.com\",\n\t\"password\": \"111111\"\n}"
+                  "value" : "{\n\t\"email\": \"jec@stratpoint.com\",\n\t\"password\": \"111111\"\n}"
                 }
               }
             }
@@ -30,6 +30,196 @@
         },
         "responses" : {
           "200" : {
+            "content" : {
+
+            }
+          }
+        }
+      }
+    },
+    "/api/add" : {
+      "post" : {
+        "description" : "Create new user",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body"
+              },
+              "examples" : {
+                "0" : {
+                  "value" : "{\n\t\"email\": \"jec@stratpoint.com\",\n\t\"password\": \"111111\",\n\t\"firstName\": \"Jerico\",\n\t\"lastName\": \"Jerico\",\n\t\"middleName\": \"Jerico\",\n\t\"role\": \"user\"\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+
+            }
+          }
+        }
+      }
+    },
+    "/api/users" : {
+      "get" : {
+        "description" : "Get list of all users",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+
+            }
+          },
+          "401" : {
+            "content" : {
+
+            }
+          },
+          "403" : {
+            "content" : {
+
+            }
+          }
+        }
+      }
+    },
+    "/api/user" : {
+      "get" : {
+        "description" : "Get user data",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Id of user to show",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+
+            }
+          },
+          "401" : {
+            "content" : {
+
+            }
+          },
+          "403" : {
+            "content" : {
+
+            }
+          }
+        }
+      }
+    },
+    "/api/update" : {
+      "put" : {
+        "description" : "Get user data",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Id of user to show",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body"
+              },"examples" : {
+                "0" : {
+                  "value" : "{\n\t\"email\": \"jec@stratpoint.com\",\n\t\"password\": \"111111\",\n\t\"firstName\": \"Jerico\",\n\t\"lastName\": \"Jerico\",\n\t\"middleName\": \"Jerico\",\n\t\"role\": \"user\"\n}"
+                }
+              }
+            
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+
+            }
+          },
+          "401" : {
+            "content" : {
+
+            }
+          },
+          "403" : {
+            "content" : {
+
+            }
+          }
+        }
+      }
+    },    
+    "/api/delete" : {
+      "delete" : {
+        "description" : "Get user data",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Id of user to show",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body"
+              },"examples" : {
+                "0" : {
+                  "value" : "{\n\t\"email\": \"jec@stratpoint.com\",\n\t\"password\": \"111111\",\n\t\"firstName\": \"Jerico\",\n\t\"lastName\": \"Jerico\",\n\t\"middleName\": \"Jerico\",\n\t\"role\": \"user\"\n}"
+                }
+              }
+            
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+
+            }
+          },
+          "401" : {
+            "content" : {
+
+            }
+          },
+          "403" : {
             "content" : {
 
             }
