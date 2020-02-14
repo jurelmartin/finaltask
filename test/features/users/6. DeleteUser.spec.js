@@ -11,7 +11,7 @@ describe('API :: DELETE /api/users/:id', () => {
     context('when user role is "user"', () => {
       context('user is Not Authorized', () => {
         it('returns 403 with the message', mochaAsync(async()=> {
-          let res = await request('localhost:3000')
+          let res = await request('https://final-amberjs-task.herokuapp.com/')
             .delete(`/api/delete?id=${getUserId()}`)
             .set('Authorization', 'bearer ' + getUserToken())
             .expect(403);
@@ -26,7 +26,7 @@ describe('API :: DELETE /api/users/:id', () => {
       context('user is AUTHORIZED', () => {
         context('when user exists', () => {
           it('returns 200 with the message', mochaAsync(async () => {
-            let res = await request('localhost:3000')
+            let res = await request('https://final-amberjs-task.herokuapp.com/')
               .delete(`/api/delete?id=${getUserId()}`)
               .set('Authorization', 'bearer ' + getAdminToken())
               .expect(200);
@@ -37,7 +37,7 @@ describe('API :: DELETE /api/users/:id', () => {
         });
         context('when user does not exists', () => {
           it('returns 404 with the NotFound error', mochaAsync(async () => {
-            let res = await request('localhost:3000')
+            let res = await request('https://final-amberjs-task.herokuapp.com/')
               .delete('/api/delete?id=1')
               .set('Authorization', 'bearer ' + getAdminToken())
               .expect(404);
@@ -52,7 +52,7 @@ describe('API :: DELETE /api/users/:id', () => {
 
   context('when user is not authenticated', () => {  
     it('returns 401 with the message', mochaAsync(async () => {
-      let res = await request('localhost:3000')
+      let res = await request('https://final-amberjs-task.herokuapp.com/')
         .delete(`/api/delete?id=${getUserId()}`)
         .expect(401);
 

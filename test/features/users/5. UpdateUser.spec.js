@@ -9,7 +9,7 @@ describe('API :: PUT /api/users/:id', () => {
     context('when user is AUTHORIZED', () => {
       context('when input data is valid', () => {
         it('USER : returns 202 and updates user data', mochaAsync(async() => {
-          let res = await request('localhost:3000')
+          let res = await request('https://final-amberjs-task.herokuapp.com/')
             .put(`/api/update?id=${getUserId()}`)
             .set('Authorization', 'bearer ' + getUserToken())
             .send({
@@ -22,7 +22,7 @@ describe('API :: PUT /api/users/:id', () => {
         }));
 
         it('ADMIN : returns 202 and updates user data', mochaAsync(async() => {
-          let res = await request('localhost:3000')
+          let res = await request('https://final-amberjs-task.herokuapp.com/')
             .put(`/api/update?id=${getUserId()}`)
             .set('Authorization', 'bearer ' + getAdminToken())
             .send({
@@ -36,7 +36,7 @@ describe('API :: PUT /api/users/:id', () => {
       });
       context('when sent data is invalid', () => {
         it('returns 400 with validation error', mochaAsync(async () => {
-          let res = await request('localhost:3000').put(`/api/update?id=${getUserId()}`)
+          let res = await request('https://final-amberjs-task.herokuapp.com/').put(`/api/update?id=${getUserId()}`)
             .set('Authorization', 'bearer ' + getAdminToken())
             .send({
               email: 'm',
@@ -59,7 +59,7 @@ describe('API :: PUT /api/users/:id', () => {
     });
     context('when user is Not Authorized', () => {
       it('returns 403 with the message', mochaAsync(async()=> {
-        let res = await request('localhost:3000')
+        let res = await request('https://final-amberjs-task.herokuapp.com/')
           .put('/api/update?id=otherUserId')
           .set('Authorization', 'bearer ' + getUserToken())
           .expect(403);
@@ -75,7 +75,7 @@ describe('API :: PUT /api/users/:id', () => {
   context('when user does not exist', () => {
     it('returns 400 with the NotFoundError', mochaAsync(async() => {
 
-      let res = await request('localhost:3000')
+      let res = await request('https://final-amberjs-task.herokuapp.com/')
         .put(`/api/update?id=${getUserId+'wrong'}`)
         .set('Authorization', 'bearer ' + getAdminToken())
         .send({

@@ -22,7 +22,7 @@ describe('API :: POST /api/users', () => {
       role: 'user'
     };
     it('returns 200', mochaAsync(async () => {
-      let res = await request('localhost:3000')
+      let res = await request('https://final-amberjs-task.herokuapp.com/')
         .post('/api/add')
         .send(adminData);
 
@@ -31,7 +31,7 @@ describe('API :: POST /api/users', () => {
         email: adminData.email,
         password: adminData.password
       });   
-      res = await request('localhost:3000')
+      res = await request('https://final-amberjs-task.herokuapp.com/')
         .post('/api/add')
         .send(userData);
 
@@ -45,7 +45,7 @@ describe('API :: POST /api/users', () => {
   });
   context('when inputs are invalid', () => {  
     it('returns 401', mochaAsync(async () => {
-      let res = await request('localhost:3000')
+      let res = await request('https://final-amberjs-task.herokuapp.com/')
         .post('/api/add')
         .send({
           email: 'test'+Math.random()+'@stratpoint.com',
