@@ -6,22 +6,15 @@ const methodOverride = require('method-override');
 const controller = require('./utils/createControllerRoutes');
 const path = require('path');
 const openApiDoc = require('./openApi.json');
-const {authorization} = require('ftauth');
-const unless = require('express-unless');
+const {authorization} = require('ftauth'); 
 
-
-
-module.exports = ({ config, notFound, authenticationMiddleware, containerMiddleware, loggerMiddleware, errorHandler, openApiMiddleware }) => {
+module.exports = ({ config, notFound, checkIfProfile, authenticationMiddleware, containerMiddleware, loggerMiddleware, errorHandler, openApiMiddleware }) => {
   const router = Router();
-  authenticationMiddleware.unless = unless;
 
   router.use(containerMiddleware);
 
-  router.use(authenticationMiddleware.unless({ path: ['/', '/api/login', '/AmberJS.png', '/api/docs', { url: '/api/users', methods: ['POST'] }]}));
+  router.use(authenticationMiddleware);
 
-  // router.use(tryAuthMid);
-
-  // router.use(authenticationMiddleware);
 
   /* istanbul ignore if */
   if(config.env !== 'test') {
@@ -30,16 +23,14 @@ module.exports = ({ config, notFound, authenticationMiddleware, containerMiddlew
 
   const apiRouter = Router();
 
-
   apiRouter
     .use(methodOverride('X-HTTP-Method-Override'))
     .use(cors())
-
     .use(bodyParser.json())
     .use(compression())
     .use('/docs', openApiMiddleware(openApiDoc));
-
-    
+  
+  
 
   /*
    * Add your API routes here
@@ -53,9 +44,10 @@ module.exports = ({ config, notFound, authenticationMiddleware, containerMiddlew
    */
 
   // apiRouter.use('/users', controller('controllers/UsersController'));
+  // apiRouter.use(controller('controllers/AuthController.js'));
   apiRouter.use(controller('controllers/AuthenticationController.js'));
   apiRouter.use(authorization.checkPermission());
-
+  apiRouter.use(checkIfProfile);
   apiRouter.use(controller('controllers/UsersController.js'));
   /* apiRoutes END */
 

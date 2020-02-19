@@ -1,7 +1,7 @@
 const express = require('express');
 const { BaseController } = require('@amberjs/core');
 
-class AuthController extends BaseController {
+class AuthenticationController extends BaseController {
   
   constructor() {
     
@@ -13,16 +13,18 @@ class AuthController extends BaseController {
         const {operation} = req;
         const { SUCCESS, ERROR, NOT_FOUND } = operation.events;
         operation
-          .on(SUCCESS, (result) => {
-            req.role = result.role;
+          .on(SUCCESS, () => {
             return next();
           })
           .on(ERROR, () => {
             return next();
           })
           .on(NOT_FOUND, () => {
-            req.isAuthenticated = false;
-            return next();
+            return res.status(401).json({
+              status: 401,
+              message: 'Not Authenticated'
+            });
+
           });
         operation.execute(req.userId);
       } );
@@ -30,4 +32,4 @@ class AuthController extends BaseController {
   }
 }
 
-module.exports = AuthController;
+module.exports = AuthenticationController;

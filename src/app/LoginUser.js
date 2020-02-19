@@ -28,6 +28,7 @@ class LoginUser extends Operation {
 
         if(!checkPassword) {this.password =  false; }
 
+
         else {
 
           const token =  authentication.generateToken(id, process.env.ACCESS_TOKEN_KEY, process.env.ACCESS_TOKEN_EXP);
