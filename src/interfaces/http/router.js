@@ -15,6 +15,7 @@ module.exports = ({ config, notFound, checkIfProfile, authenticationMiddleware, 
 
   router.use(authenticationMiddleware);
 
+
   /* istanbul ignore if */
   if(config.env !== 'test') {
     router.use(loggerMiddleware);
