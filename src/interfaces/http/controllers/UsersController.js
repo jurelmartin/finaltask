@@ -84,7 +84,7 @@ class UsersController {
           .status(Status.OK)
           .json({ status: Status.OK, details: { message: 'List of User', result: result } });
       })
-      .on(NOT_FOUND, (error) => {
+      .on(NOT_FOUND, () => {
         res.status(Status.NOT_FOUND).json({
           status: Status.NOT_FOUND,
           type: 'NotFoundError',
@@ -156,7 +156,7 @@ class UsersController {
           .status(Status.OK)
           .json({status: Status.OK, details: { message: 'Successfully deleted!' }}).end();
       })
-      .on(NOT_FOUND, (error) => {
+      .on(NOT_FOUND, () => {
         res.status(Status.NOT_FOUND).json({
           status: Status.NOT_FOUND,
           type: 'NotFoundError',

@@ -21,10 +21,13 @@ describe('API :: POST /api/login', () => {
       let res = await request('https://final-amberjs-task.herokuapp.com').post('/api/login')
         .send(getUserCredentials());
       const obj = JSON.parse(res.text);
-      setUserToken(obj.details.result.token);
-      setUserId(obj.details.result.userId);
-      expect(obj.details.result).to.have.property('token');
-      expect(obj.details.result).to.have.property('userId');   
+      const resultObj = obj.details.result;
+      const { token, userId } = resultObj;
+      
+      setUserToken(token);
+      setUserId(userId);
+      expect(resultObj).to.have.property('token');
+      expect(resultObj).to.have.property('userId');   
     }));
 
   });
