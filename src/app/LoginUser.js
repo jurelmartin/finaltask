@@ -3,8 +3,6 @@ const User = require('src/domain/User');
 const { authentication } = require('ftauth');
 const hashPassword  = require('../infra/encryption/hashPassword');
 
-
-
 class LoginUser extends Operation {
   constructor({ UserRepository }) {
     super();
@@ -15,43 +13,37 @@ class LoginUser extends Operation {
     const { SUCCESS, VALIDATION_ERROR } = this.events;
 
     const user = new User(data);
-    // console.log(user);
-    const email    = user.email;
-    const password = user.password;
-
+    const { email, password } = user;
+    const inputPassword = password;
 
 
     try {
       const userData = (await this.UserRepository.getAll({ where: { email } }))[0];
 
-      if(userData === undefined) {
-        this.email = false;
- 
-      }
+      if (userData === undefined) { this.email = false; }
+
       else {
-        const setUser =  userData.dataValues;
-        const newUserPassword =  setUser.password;
+        const { id, password } = userData.dataValues;
+        const checkPassword =  hashPassword.comparePassword(inputPassword, password);
 
-        const checkPassword =  hashPassword.comparePassword(password, newUserPassword);
+        if(!checkPassword) {this.password =  false; }
 
-        if(!checkPassword) {
-          this.password =  false;
+        else {
 
-        }else {
-
-          const getUserId =  setUser.id;
-
-          const token =  authentication.generateToken(getUserId, process.env.ACCESS_TOKEN_KEY, process.env.ACCESS_TOKEN_EXP);
-          token.userId =  getUserId;
-
-
+          const token =  authentication.generateToken(id, process.env.ACCESS_TOKEN_KEY, process.env.ACCESS_TOKEN_EXP);
+          token.userId =  id;
+  
           this.email =  true;
           this.password =  true;
           return this.emit(SUCCESS, token);
         }
       }
            
-      const newUser =  {email: this.email, password: this.password};  
+      const newUser =  { 
+        email: this.email, 
+        password: this.password
+      };
+
       const user =  await new User(newUser);
       const result =  user.isAuth();
 
