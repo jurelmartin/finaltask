@@ -13,7 +13,8 @@ module.exports = (req, res, next) => {
     {roles: ['Admin', 'User', 'Profile'], method: 'PUT', url: '/api/update?id=' + req.query.id},
     {roles: ['Admin', 'User', 'Profile'], method: 'PUT', url: '/api/update?id=' + req.query.id+'/'},
     {roles: ['Admin'], method: 'DELETE', url: '/api/delete?id='+ req.query.id},
-    {roles: ['Admin'], method: 'DELETE', url: '/api/delete?id='+ req.query.id+'/'}
+    {roles: ['Admin'], method: 'DELETE', url: '/api/delete?id='+ req.query.id+'/'},
+    {roles: ['Admin', 'User'], method: 'POST', url: '/api/clients'}
   ]);
 
   const pathExist = paths.checkPath(req.originalUrl, req.method);

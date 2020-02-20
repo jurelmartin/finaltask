@@ -49,11 +49,13 @@ module.exports = ({ config, notFound, checkIfProfile, authenticationMiddleware, 
   apiRouter.use(authorization.checkPermission());
   apiRouter.use(checkIfProfile);
   apiRouter.use(controller('controllers/UsersController.js'));
+
+  apiRouter.use(controller('controllers/ClientsController.js'));
   /* apiRoutes END */
 
   router.use('/api', apiRouter);
   router.use('/', static(path.join(__dirname, './public')));
-  router.use('/', notFound);
+  // router.use('/', notFound);
 
   router.use(errorHandler);
 
