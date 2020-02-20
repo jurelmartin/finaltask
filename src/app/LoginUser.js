@@ -4,9 +4,9 @@ const { authentication } = require('ftauth');
 const hashPassword  = require('../infra/encryption/hashPassword');
 
 class LoginUser extends Operation {
-  constructor({ UserRepository }) {
+  constructor({ ClientRepository }) {
     super();
-    this.UserRepository = UserRepository;
+    this.ClientRepository = ClientRepository;
   }
 
   async execute(data) {
@@ -18,7 +18,7 @@ class LoginUser extends Operation {
 
 
     try {
-      const userData = (await this.UserRepository.getAll({ where: { email } }))[0];
+      const userData = (await this.ClientRepository.getAll({ where: { email } }))[0];
 
       if (userData === undefined) { this.email = false; }
 
