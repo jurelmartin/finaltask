@@ -1,8 +1,8 @@
 const { expect } = require('chai');
 const mocks = require('node-mocks-http');
 const authMiddleware = require('src/interfaces/http/middlewares/authenticationMiddleware');
-const sinon = require("sinon");
-const {authentication} = require('ftauth');
+const sinon = require('sinon');
+const {authentication, paths} = require('ftauth');
 
 describe('Infra :: http :: Middlewares :: authenticationMiddleware', () => {
 
@@ -13,6 +13,8 @@ describe('Infra :: http :: Middlewares :: authenticationMiddleware', () => {
       const res = mocks.createResponse();
       const req = mocks.createRequest();
 
+      sinon.stub(paths, 'checkPath');
+      paths.checkPath.returns(true);
       sinon.stub(authentication, 'verifyToken');
       authentication.verifyToken.returns({ userId: 'abc' });
 
