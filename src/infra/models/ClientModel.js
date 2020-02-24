@@ -6,14 +6,17 @@ module.exports = {
     const ClientModel = datasource.define('ClientModel', {
       id : {
         primaryKey: true,
-        autoIncrement: true,
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4
       }, 
       name : {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: false
+        
       },
       secret : {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: false
       },
       userId : {
         type: DataTypes.STRING

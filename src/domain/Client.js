@@ -4,7 +4,6 @@ const Client = attributes({
   //id
   name: { 
     type: String, 
-    unique: true, 
     required: true 
   },
   secret: { 
@@ -12,8 +11,7 @@ const Client = attributes({
     required: true 
   },
   userId: { 
-    type: String, 
-    required: true 
+    type: String
   }
 })(class Client {
   // Add validation functions below
