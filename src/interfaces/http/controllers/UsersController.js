@@ -104,7 +104,7 @@ class UsersController {
       .on(SUCCESS, (result) => {
         res
           .status(Status.CREATED)
-          .json({ status: Status.CREATED, details: { message: 'User Created!', userId: result } });
+          .json({ status: Status.CREATED, details: { message: 'User Created!', user: result } });
       })
       .on(VALIDATION_ERROR, (error) => {
         res.status(Status.BAD_REQUEST).json({

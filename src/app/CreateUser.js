@@ -26,7 +26,6 @@ class CreateUser extends Operation {
       }
 
       const newUser = await this.UserRepository.add((user).toJSON());
-
       this.emit(SUCCESS, newUser);
     } catch(error) {
       this.emit(VALIDATION_ERROR, {

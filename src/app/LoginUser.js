@@ -23,7 +23,7 @@ class LoginUser extends Operation {
       if (userData === undefined) { this.email = false; }
 
       else {
-        const { id, password } = userData.dataValues;
+        const { id, firstName, lastName, password } = userData.dataValues;
         const checkPassword =  hashPassword.comparePassword(inputPassword, password);
 
         if(!checkPassword) {this.password =  false; }
@@ -31,8 +31,8 @@ class LoginUser extends Operation {
         else {
 
           const token =  authentication.generateToken(id, process.env.ACCESS_TOKEN_KEY, process.env.ACCESS_TOKEN_EXP);
-          token.userId =  id;
-  
+          token.user =  lastName +', '+ firstName;
+          console.log(token);
           this.email =  true;
           this.password =  true;
           return this.emit(SUCCESS, token);
