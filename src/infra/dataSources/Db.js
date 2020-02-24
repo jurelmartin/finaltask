@@ -5,7 +5,7 @@ module.exports = {
   config: {
     host: 'remotemysql.com',
     username: 'gsHgUjN4jj',
-    password: 'cK4rfSzeoj',
+    password: 'pmndflfefU',
     database: 'gsHgUjN4jj',
     dialect: 'mysql',
     isSync: 'true',

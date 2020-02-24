@@ -57,6 +57,8 @@ module.exports = ({ config, notFound, authenticationMiddleware, containerMiddlew
   apiRouter.use(authorization.checkPermission());
 
   apiRouter.use(controller('controllers/UsersController.js'));
+
+  apiRouter.use('/clients', controller('controllers/ClientsController.js'));
   /* apiRoutes END */
 
   router.use('/api', apiRouter);
