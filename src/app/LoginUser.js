@@ -31,11 +31,12 @@ class LoginUser extends Operation {
         else {
 
           const token =  authentication.generateToken(id, process.env.ACCESS_TOKEN_KEY, process.env.ACCESS_TOKEN_EXP);
-          token.fistName = firstName;
+          token.firstName = firstName;
           token.lastName = lastName;
-          
+
           this.email =  true;
           this.password =  true;
+
           return this.emit(SUCCESS, token);
         }
       }
