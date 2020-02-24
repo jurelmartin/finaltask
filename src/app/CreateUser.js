@@ -17,7 +17,7 @@ class CreateUser extends Operation {
       const result = new validationClass(user);
       const errors = result.validationChecker();
       
-
+      
       if(errors){
         const error = new Error;
         error.message = errors;
