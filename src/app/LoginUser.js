@@ -31,6 +31,7 @@ class LoginUser extends Operation {
         else {
 
           const token =  authentication.generateToken(id, process.env.ACCESS_TOKEN_KEY, process.env.ACCESS_TOKEN_EXP);
+          token.id = id;
           token.firstName = firstName;
           token.lastName = lastName;
 
