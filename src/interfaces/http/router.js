@@ -25,7 +25,7 @@ module.exports = ({ config, notFound, checkIfProfile, authenticationMiddleware, 
 
   apiRouter
     .use(methodOverride('X-HTTP-Method-Override'))
-    .use(cors())
+    .use(cors({origin: '*'}))
     .use(bodyParser.json())
     .use(compression())
     .use('/docs', openApiMiddleware(openApiDoc));
