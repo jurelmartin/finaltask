@@ -1,28 +1,28 @@
-// FOR PRODUCTION
-module.exports = {
-  name: 'db',
-  connector : 'sql',
-  config: {
-    host: 'sql12.freemysqlhosting.net',
-    username: 'sql12323727',
-    password: 'rNEzvsVhjl',
-    database: 'sql12323727',
-    dialect: 'mysql',
-    isSync: 'true',
-
-  }
-};
-//FOR TESTING
+// // FOR PRODUCTION
 // module.exports = {
-//   name: 'test-db',
+//   name: 'db',
 //   connector : 'sql',
 //   config: {
-//     host: 'remotemysql.com',
-//     username: 'I3pzK8hI33',
-//     password: 'i2kDmahSWR',
-//     database: 'I3pzK8hI33',
+//     host: 'https://remotemysql.com',
+//     username: 'gsHgUjN4jj',
+//     password: 'pmndflfefU',
+//     database: 'gsHgUjN4jj',
 //     dialect: 'mysql',
 //     isSync: 'true',
 
 //   }
 // };
+// FOR TESTING
+module.exports = {
+  name: 'db',
+  connector : 'sql',
+  config: {
+    host: 'localhost',
+    username: 'root',
+    password: 'root',
+    database: 'yourdatabase',
+    dialect: 'mysql',
+    isSync: 'true',
+
+  }
+};

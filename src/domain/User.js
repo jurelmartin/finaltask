@@ -1,6 +1,5 @@
 const { attributes } = require('structure');
 const validator = require('email-validator');
-const { authorization } = require('ftauth');
 
 const User = attributes({
   // Add atttributes here
@@ -41,19 +40,6 @@ const User = attributes({
     
   }
 
-  isAdmin() {
-    if(!authorization.getCurrentRole()) {
-      return true;
-    }
-    isTrue = (authorization.getCurrentRole().toLowerCase() !== User.IS_ADMIN );
-    if(this.role){
-      if(isTrue) {
-        return('Not allowed to change roles');
-      }
-    }
-    return isTrue;
-    
-  }
   isValidRole() {
     if(this.role == undefined) {
       return true;

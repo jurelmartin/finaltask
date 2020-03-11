@@ -7,7 +7,7 @@
   "servers": [
     {
 
-      "url": "https://final-amberjs-task.herokuapp.com"
+      "url": "http://localhost:3000"
     }
   ],
   "paths": {

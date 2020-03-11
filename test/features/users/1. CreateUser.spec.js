@@ -3,7 +3,7 @@ const { expect } = require('chai');
 const mochaAsync = require('test/support/mochaAsync');
 const { setUserCredentials, setAdminCredentials } = require ('test/support/userHelper');
 
-describe('API :: POST /api/users', () => {
+describe('API :: POST /api/register', () => {
   context('when inputs are valid', () => {  
     const adminData = {
       email: 'test'+Math.random()+'@stratpoint.com',
@@ -22,8 +22,8 @@ describe('API :: POST /api/users', () => {
       role: 'user'
     };
     it('returns 200', mochaAsync(async () => {
-      let res = await request('https://final-amberjs-task.herokuapp.com')
-        .post('/api/add')
+      let res = await request('http://localhost:3000')
+        .post('/api/register')
         .send(adminData);
 
       expect(res.status).to.equal(201);       
@@ -31,8 +31,8 @@ describe('API :: POST /api/users', () => {
         email: adminData.email,
         password: adminData.password
       });   
-      res = await request('https://final-amberjs-task.herokuapp.com')
-        .post('/api/add')
+      res = await request('http://localhost:3000')
+        .post('/api/register')
         .send(userData);
 
       expect(res.status).to.equal(201);       
@@ -45,8 +45,8 @@ describe('API :: POST /api/users', () => {
   });
   context('when inputs are invalid', () => {  
     it('returns 401', mochaAsync(async () => {
-      let res = await request('https://final-amberjs-task.herokuapp.com')
-        .post('/api/add')
+      let res = await request('http://localhost:3000')
+        .post('/api/register')
         .send({
           email: 'test'+Math.random()+'@stratpoint.com',
           password: '11111',

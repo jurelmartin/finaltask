@@ -12,10 +12,6 @@ class validationClass {
       this.errors.push(this.user.isValidEmail());
     }
 
-    if(this.user.isAdmin().length > 0){
-      this.errors.push(this.user.isAdmin());
-    }
-
     if(this.user.isValidRole().length > 0){
       this.errors.push(this.user.isValidRole());
     }

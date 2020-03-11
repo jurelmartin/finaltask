@@ -11,12 +11,7 @@ class UsersController {
       next();
     };
     const router = Router();
-
-    router.post('/login', this.injector('LoginUser'), this.login);
-    // super();
-    
     router.get('/users', this.injector('ListUsers'), this.index);
-    router.post('/add', this.injector('CreateUser'), this.create);
     router.get('/user', this.injector('ShowUser'), this.show);
     router.put('/update', this.injector('UpdateUser'), this.update);      
     router.delete('/delete', this.injector('DeleteUser'), this.delete);

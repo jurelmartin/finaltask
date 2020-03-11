@@ -10,7 +10,7 @@ describe('API :: POST /api/login', () => {
 
   context('when credentials are valid', () => {
     it('returns 200', mochaAsync(async () => { 
-      let res = await request('https://final-amberjs-task.herokuapp.com')
+      let res = await request('http://localhost:3000')
         .post('/api/login')
         .send(getAdminCredentials());
       expect(res.status).to.equal(200);
@@ -18,7 +18,7 @@ describe('API :: POST /api/login', () => {
       setAdminToken(obj.details.result.token);
     }));
     it('returns token with userId', mochaAsync(async () => {
-      let res = await request('https://final-amberjs-task.herokuapp.com').post('/api/login')
+      let res = await request('http://localhost:3000').post('/api/login')
         .send(getUserCredentials());
       const obj = JSON.parse(res.text);
       const resultObj = obj.details.result;
@@ -34,7 +34,7 @@ describe('API :: POST /api/login', () => {
 
   context('when credentials are invalid', () => {
     it('returns 401', mochaAsync(async () => {
-      let res = await request('https://final-amberjs-task.herokuapp.com').post('/api/login')
+      let res = await request('http://localhost:3000').post('/api/login')
         .send({
           email: 'jagustin@stratpoint.com',
           password: '1'

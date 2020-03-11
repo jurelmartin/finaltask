@@ -1,36 +1,46 @@
-const {authentication, paths} = require('ftauth');
-
+const passport = require('passport');
+const {ExtractJwt, Strategy} = require('passport-jwt');
 // const userRepository = require('src/infra/repositories/UserRepository');
 // const userModel = require('src/infra/models/UserModel');
 
-module.exports = (req, res, next) => {
+exports.initialize = () => {
+  return passport.initialize();
+};
 
-  paths.setPath([
-    {roles: ['Admin'], method: 'GET', url: '/api/users'}, 
-    {roles: ['Admin'], method: 'GET', url: '/api/users/'}, 
-    {roles: ['Admin'], method: 'GET', url: '/api/user?id=' + req.query.id}, 
-    {roles: ['Admin'], method: 'GET', url: '/api/user?id=' + req.query.id+'/'}, 
-    {roles: ['Admin', 'User', 'Profile'], method: 'PUT', url: '/api/update?id=' + req.query.id},
-    {roles: ['Admin', 'User', 'Profile'], method: 'PUT', url: '/api/update?id=' + req.query.id+'/'},
-    {roles: ['Admin'], method: 'DELETE', url: '/api/delete?id='+ req.query.id},
-    {roles: ['Admin'], method: 'DELETE', url: '/api/delete?id='+ req.query.id+'/'}
-  ]);
+exports.authenticate = (repository) => {
+  return [
+    (req, res, next) => {
 
-  const pathExist = paths.checkPath(req.originalUrl, req.method);
+      const jwtOptions = {};
+      jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+      jwtOptions.secretOrKey = 'supersecretkey';  
+      
 
-  if(pathExist){
-    const authHeader = req.get('Authorization');
-    // gets the decoded token from verify function
-    const decodedToken = authentication.verifyToken(authHeader, 'supersecretkey');
-
-    if (!decodedToken) {
-      return res.status(401).json({ status: 401, message: 'Not Authenticated' });
+      passport.use(new Strategy(jwtOptions, (jwt_payload, done) => {
+        repository.findByPk(jwt_payload.id)
+          .then((user) => {
+            done(null, user);
+          })
+          .catch((error) =>  done(error, null));
+      }));
+  
+      passport.serializeUser(function (user, done) {
+        done(null, user);
+      });
+  
+      passport.deserializeUser(function (user, done) {
+        done(null, user);
+      });
+  
+      return passport.authenticate('jwt', (err, user, info)=> {
+        if(!user){
+          res.status(401).json({
+            status: 401,
+            message: 'Not Authenticated'
+          });
+        }
+        next();
+      })(req, res, next);
     }
-
-
-    req.userId = decodedToken.id;
-
-  }
-
-  next();
+  ];
 };

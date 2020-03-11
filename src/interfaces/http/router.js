@@ -1,21 +1,21 @@
 const { Router, static } = require('express');
 const cors = require('cors');
+const passport = require('passport');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const methodOverride = require('method-override');
 const controller = require('./utils/createControllerRoutes');
 const path = require('path');
 const openApiDoc = require('./openApi.json');
-const {authorization} = require('ftauth'); 
+const { findById } = require('src/infra/userHelper/userHelper');
 
-module.exports = ({ config, notFound, checkIfProfile, authenticationMiddleware, containerMiddleware, loggerMiddleware, errorHandler, openApiMiddleware }) => {
+const helper = require('src/infra/userHelper/userHelper');
+const {initialize, authenticate } = require('jec-auth');
+
+module.exports = ({ config, authenticationMiddleware, notFound, containerMiddleware, loggerMiddleware, errorHandler, openApiMiddleware }) => {
   const router = Router();
 
   router.use(containerMiddleware);
-
-  router.use(authenticationMiddleware);
-
-
   /* istanbul ignore if */
   if(config.env !== 'test') {
     router.use(loggerMiddleware);
@@ -28,29 +28,12 @@ module.exports = ({ config, notFound, checkIfProfile, authenticationMiddleware, 
     .use(cors())
     .use(bodyParser.json())
     .use(compression())
-    .use('/docs', openApiMiddleware(openApiDoc));
-  
-  
+    .use('/docs', openApiMiddleware(openApiDoc))
+    .use(initialize( process.env.ACCESS_TOKEN_KEY, helper ));
 
-  /*
-   * Add your API routes here
-   *
-   * You can use the `controllers` helper like this:
-   * apiRouter.use('/users', controller(controllerPath))
-   *
-   * The `controllerPath` is relative to the `interfaces/http` folder
-   * Avoid hardcoding in this file as much. Deleting comments in this file
-   * may cause errors on scaffoldings
-   */
-
-  // apiRouter.use('/users', controller('controllers/UsersController'));
-  // apiRouter.use(controller('controllers/AuthController.js'));
-  apiRouter.use(controller('controllers/AuthenticationController.js'));
-  apiRouter.use(authorization.checkPermission());
-  apiRouter.use(checkIfProfile);
-  apiRouter.use(controller('controllers/UsersController.js'));
+  apiRouter.use(controller('controllers/AuthController.js'));
+  apiRouter.use(controller('controllers/GetUsersData.js'), authenticate(), controller('controllers/RestrictedController.js'));
   /* apiRoutes END */
-
   router.use('/api', apiRouter);
   router.use('/', static(path.join(__dirname, './public')));
   router.use('/', notFound);
