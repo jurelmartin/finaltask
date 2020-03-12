@@ -33,12 +33,9 @@ describe('API :: GET /api/users/:id', () => {
   
   context('when user is not authenticated', () => {  
     it('returns 401 with the message', mochaAsync(async () => {
-      let res = await request('http://localhost:3000')
+      await request('http://localhost:3000')
         .get(`/api/user?id=${getUserId()}`)
-        .expect(401);
-
-      const obj = JSON.parse(res.text);     
-      expect(obj.message).to.equal('Not Authenticated');                            
+        .expect(401);                        
     }));
   });
 });

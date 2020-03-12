@@ -62,16 +62,13 @@ describe('API :: PUT /api/users/:id', () => {
   context('when user does not exist', () => {
     it('returns 400 with the NotFoundError', mochaAsync(async() => {
 
-      let res = await request('http://localhost:3000')
+      await request('http://localhost:3000')
         .put(`/api/update?id=${getUserId+'wrong'}`)
         .set('Authorization', 'bearer ' + getAdminToken())
         .send({
           firstName: 'tryToEdit'
         })
         .expect(400);
-    
-      const obj = JSON.parse(res.text);
-      expect(obj.details).to.equal('NotFoundError');
     }));
   });
 
