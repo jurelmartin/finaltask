@@ -9,7 +9,6 @@ const openApiDoc = require('./openApi.json');
 const passport = require('passport');
 
 const helper = require('src/infra/userHelper/userHelper');
-const {initialize, authenticate } = require('jec-auth');
 
 module.exports = ({ config, authenticationMiddleware, notFound, containerMiddleware, loggerMiddleware, errorHandler, openApiMiddleware }) => {
   const router = Router();
@@ -28,11 +27,11 @@ module.exports = ({ config, authenticationMiddleware, notFound, containerMiddlew
     .use(bodyParser.json())
     .use(compression())
     .use('/docs', openApiMiddleware(openApiDoc))
-    .use(initialize());
+    .use(passport.initialize());
 
   apiRouter.use(controller('controllers/AuthController.js'));
   // apiRouter.use(controller('controllers/GetUserData.js'));
-  apiRouter.use(controller('controllers/GetUserData.js'), authenticate(), controller('controllers/RestrictedController.js'));
+  apiRouter.use(controller('controllers/GetUserData.js'), passport.authenticate('jwt'), controller('controllers/RestrictedController.js'));
   /* apiRoutes END */
   router.use('/api', apiRouter);
   router.use('/', static(path.join(__dirname, './public')));
