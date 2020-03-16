@@ -27,11 +27,17 @@ module.exports = ({ config, authenticationMiddleware, notFound, containerMiddlew
     .use(bodyParser.json())
     .use(compression())
     .use('/docs', openApiMiddleware(openApiDoc))
-    .use(passport.initialize());
+    .use((req, res, next) => {
+      const config = {
+        authSecret: 'supersecretkey'
+      };
+      const {UserRepository} = req.container.cradle;
+      return authenticationMiddleware.initialize(config, UserRepository)(req, res, next);
+    });
 
   apiRouter.use(controller('controllers/AuthController.js'));
   // apiRouter.use(controller('controllers/GetUserData.js'));
-  apiRouter.use(controller('controllers/GetUserData.js'), passport.authenticate('jwt'), controller('controllers/RestrictedController.js'));
+  apiRouter.use(controller('controllers/GetUserData.js'), authenticationMiddleware.authenticate(), controller('controllers/RestrictedController.js'));
   /* apiRoutes END */
   router.use('/api', apiRouter);
   router.use('/', static(path.join(__dirname, './public')));

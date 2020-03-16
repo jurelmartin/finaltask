@@ -1,25 +1,32 @@
 const passport = require('passport');
 const {ExtractJwt, Strategy} = require('passport-jwt');
+let config, repository;
 // const userRepository = require('src/infra/repositories/UserRepository');
 // const userModel = require('src/infra/models/UserModel');
 
-exports.initialize = () => {
+exports.initialize = (inputConfig, inputRepository) => {
+
+  config = inputConfig;
+  repository = inputRepository;
+
   return passport.initialize();
 };
 
-exports.authenticate = (repository) => {
+exports.authenticate = () => {
   return [
     (req, res, next) => {
 
       const jwtOptions = {};
       jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-      jwtOptions.secretOrKey = 'supersecretkey';  
+      jwtOptions.secretOrKey = config.authSecret;  
       
 
       passport.use(new Strategy(jwtOptions, (jwt_payload, done) => {
-        repository.findByPk(jwt_payload.id)
+        console.log('payload is', jwt_payload.id);
+        repository.getById(jwt_payload.id)
           .then((user) => {
-            done(null, user);
+            console.log(user);
+            done(null, user.dataValues);
           })
           .catch((error) =>  done(error, null));
       }));
