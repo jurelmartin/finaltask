@@ -1,6 +1,6 @@
 const express = require('express');
 const { BaseController } = require('@amberjs/core');
-const { configure } = require('jec-auth');
+const { configure } = require('src/interfaces/http/middlewares/strategy.js');
 class getClientController extends BaseController {
   
   constructor() {
