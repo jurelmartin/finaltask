@@ -8,7 +8,7 @@ class ListUsers extends Operation {
 
   async execute() {
     const { SUCCESS, NOT_FOUND } = this.events;
-
+    // console.log('from list: '+ (await this.UserRepository).toString());
     try {
       const users = await this.UserRepository.getAll({ attributes: {exclude: ['password', 'createdAt', 'updatedAt']} });
 
