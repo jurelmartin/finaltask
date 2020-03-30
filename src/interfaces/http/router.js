@@ -11,17 +11,10 @@ const unless = require('express-unless');
 
 
 
-module.exports = ({ config, notFound, authenticationMiddleware, containerMiddleware, loggerMiddleware, errorHandler, openApiMiddleware }) => {
+module.exports = ({ config, notFound,  containerMiddleware, loggerMiddleware, errorHandler, openApiMiddleware }) => {
   const router = Router();
-  authenticationMiddleware.unless = unless;
 
   router.use(containerMiddleware);
-
-  router.use(authenticationMiddleware.unless({ path: ['/', '/api/login', '/AmberJS.png', '/api/docs', { url: '/api/users', methods: ['POST'] }]}));
-
-  // router.use(tryAuthMid);
-
-  // router.use(authenticationMiddleware);
 
   /* istanbul ignore if */
   if(config.env !== 'test') {
@@ -53,9 +46,6 @@ module.exports = ({ config, notFound, authenticationMiddleware, containerMiddlew
    */
 
   // apiRouter.use('/users', controller('controllers/UsersController'));
-  apiRouter.use(controller('controllers/AuthenticationController.js'));
-  apiRouter.use(authorization.checkPermission());
-
   apiRouter.use(controller('controllers/UsersController.js'));
   /* apiRoutes END */
 
