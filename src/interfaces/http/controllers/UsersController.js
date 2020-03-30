@@ -1,6 +1,5 @@
 const { Router } = require('express');
 const Status = require('http-status');
-const { authorization } = require('ftauth');
 
 
 
@@ -14,12 +13,14 @@ class UsersController {
     };
     const router = Router();
 
-    router.post('/login', this.injector('LoginUser'), this.login);
-    router.get('/users', this.injector('ListUsers'), this.index);
-    router.post('/users', this.injector('CreateUser'), this.create);
-    router.get('/users/:id', this.injector('ShowUser'), this.show);
-    router.put('/users/:id', this.injector('UpdateUser'), this.update);      
-    router.delete('/users/:id', this.injector('DeleteUser'), this.delete);
+    router.put('/passwordReset/:id', this.injector('PasswordReset'), this.passwordReset);
+    router.put('/passwordChange/:id', this.injector('PasswordChange'), this.passwordChange);
+    router.post('/passwordForgot/:id', this.injector('PasswordForgot'), this.passwordForgot);
+    router.get('/profile/:id', this.injector('Profile'), this.show);
+    router.get('/getMfa/:id', this.injector('GetMfa'), this.show);  
+    router.put('/profileEdit/:id', this.injector('ProfileEdit'), this.profileEdit);  
+    router.put('/setMfa/:id', this.injector('SetMfa'), this.setMFA);      
+    router.delete('/deleteUser', this.injector('DeleteUser'), this.delete);
 
     return router;
   }
@@ -86,6 +87,94 @@ class UsersController {
     operation.execute();
   }
 
+  passwordForgot(req, res, next) {
+    const { operation } = req;
+
+    const { SUCCESS, ERROR, NOT_FOUND } = operation.events;
+
+    operation
+      .on(SUCCESS, (result) => {
+        res
+          .status(Status.OK)
+          .json({ status: Status.OK, details: { result: result } });
+      })
+      .on(NOT_FOUND, (err) => {
+        res.status(400).json({
+          status: 400, 
+          details: err
+        });
+      })
+      .on(ERROR, next);
+
+    operation.execute((req.params.id));
+  }
+
+  setMFA(req, res, next) {
+    const { operation } = req;
+
+    const { SUCCESS, ERROR, NOT_FOUND } = operation.events;
+
+    operation
+      .on(SUCCESS, (result) => {
+        res
+          .status(Status.OK)
+          .json({ status: Status.OK, details: { result: result } });
+      })
+      .on(NOT_FOUND, (err) => {
+        res.status(400).json({
+          status: 400, 
+          details: err
+        });
+      })
+      .on(ERROR, (err) => {
+        res.status(400).json({
+          status: 400, 
+          details: err
+        });
+      });
+
+    operation.execute(req.params.id, req.body);
+  }
+
+  passwordChange(req, res, next) {
+    const { operation } = req;
+
+    const { SUCCESS, ERROR, NOT_FOUND } = operation.events;
+
+    operation
+      .on(SUCCESS, (result) => {
+        res
+          .status(Status.OK)
+          .json({ status: Status.OK, details: { result: result } });
+      }).on(ERROR, (err) => {
+        res.status(400).json({
+          status: 400, 
+          details: err
+        });
+      });
+
+    operation.execute(req.params.id, req.body);
+  }
+  passwordReset(req, res, next) {
+    const { operation } = req;
+
+    const { SUCCESS, ERROR, NOT_FOUND } = operation.events;
+
+    operation
+      .on(SUCCESS, (result) => {
+        res
+          .status(Status.OK)
+          .json({ status: Status.OK, details: { result: result } });
+      }).on(ERROR, (err) => {
+        res.status(400).json({
+          status: 400, 
+          details: err,
+          message: 'code expired/ invalid'
+        });
+      });
+
+    operation.execute(req.params.id, req.body);
+  }
   show(req, res, next) {
     const { operation } = req;
 
@@ -105,16 +194,6 @@ class UsersController {
         });
       })
       .on(ERROR, next);
-
-    if(req.role.toLowerCase() !== 'admin'){
-      return res
-        .status(Status.FORBIDDEN)
-        .json({
-          status: Status.FORBIDDEN,
-          type: 'AUTHORIZATION ERROR',
-          details: 'Not Authorized'
-        });
-    }
 
     operation.execute((req.params.id));
   }
@@ -141,47 +220,25 @@ class UsersController {
     operation.execute(req.body);
   }
 
-  update(req, res, next) {
+  profileEdit(req, res, next) {
     const { operation } = req;
-    const { SUCCESS, ERROR, VALIDATION_ERROR, NOT_FOUND } = operation.events;
+
+    const { SUCCESS, ERROR, NOT_FOUND } = operation.events;
 
     operation
-      .on(SUCCESS, () => {
+      .on(SUCCESS, (result) => {
         res
-          .status(Status.ACCEPTED)
-          .json({ status: Status.ACCEPTED, details: { message: 'Following fields has been Updated!', result: Object.keys(req.body)} });
-      })
-      .on(VALIDATION_ERROR, (error) => {
-        res.status(Status.BAD_REQUEST).json({
-          status: Status.BAD_REQUEST,
-          type: 'ValidationError',
-          details: error.details
+          .status(Status.OK)
+          .json({ status: Status.OK, details: { result: result } });
+      }).on(ERROR, (err) => {
+        res.status(400).json({
+          status: 400, 
+          details: err
         });
-      })
-      .on(NOT_FOUND, (error) => {
-        res.status(Status.NOT_FOUND).json({
-          status: Status.NOT_FOUND,
-          type: 'NotFoundError',
-          details: error.details
-        });
-      })
-      .on(ERROR, next);
+      });
 
-    if(req.role.toLowerCase() !== 'admin'){
-      if(req.params.id !== req.userId){
-        return res
-          .status(Status.FORBIDDEN)
-          .json({
-            status: Status.FORBIDDEN,
-            type: 'AUTHORIZATION ERROR',
-            details: 'Not Authorized'
-          });
-      }
-    }
-    authorization.setCurrentRole(req.role);
-    operation.execute((req.params.id), req.body);
+    operation.execute(req.params.id, req.body);
   }
-
   delete(req, res, next) {
     const { operation } = req;
     const { SUCCESS, ERROR,  NOT_FOUND } = operation.events;
@@ -192,26 +249,11 @@ class UsersController {
           .status(Status.OK)
           .json({status: Status.OK, details: { message: 'Successfully deleted!' }}).end();
       })
-      .on(NOT_FOUND, () => {
-        res.status(Status.NOT_FOUND).json({
-          status: Status.NOT_FOUND,
-          type: 'NotFoundError',
-          details: 'User does not exists!'
-        });
-      })
-      .on(ERROR, next);
+      .on(ERROR, (error) => {
+        res.status(Status.BAD_REQUEST).json({Status: 400, Error: error});
+      });
 
-    if(req.role.toLowerCase() !== 'admin'){
-      return res
-        .status(Status.FORBIDDEN)
-        .json({
-          status: Status.FORBIDDEN,
-          type: 'AUTHORIZATION ERROR',
-          details: 'Not Authorized'
-        });
-    }
-
-    operation.execute(req.params.id);
+    operation.execute(req.body);
   }
 }
 
